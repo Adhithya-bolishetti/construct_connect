@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./style/signup.css">
+  <script src="./script/signup.js"></script>
+  <script src="https://kit.fontawesome.com/8fbadcc80c.js" crossorigin="anonymous"></script>
+  <title>Construct-Connect</title>
+</head>
+<body>
+  <nav>
+    <lg><img src="./assets/logo-crop.png" alt="logo"></lg>
+  </nav>
+  <main>
+    <div class="gardient">
+      <div class="card">
+        <form>
+            <h1>Create a new acount</h1>
+            <div class="inp fname">
+              <label><i class="fa-solid fa-font" style="padding-right:1rem;"></i>First Name:</label>
+              <input type="text" name="fname" id="fname" placeholder="Enter your first name" required/>
+          </div>
+            <div class="inp lname">
+              <label><i class="fa-solid fa-font" style="padding-right:1rem;"></i>Last Name:</label>
+              <input type="text" name="lname" id="lname" placeholder="Enter your last name" required />
+          </div>
+            <div class="inp email">
+              <label><i class="fa-solid fa-at" style="padding-right:1rem;"></i>Email :</label>
+              <input type="email" name="email" id="email" placeholder="(optional) Enter your Email" />
+          </div>
+
+            <!-- Radio buttons for account type -->
+            <label><i class="fa-regular fa-user" style="padding-right:1rem;"></i>Type of Account :</label>
+            <div class="actype">
+              <input type="radio" name="actype" id="workerRadio" value="worker" onclick="insertForm()" required />
+              <label for="actype"><i style="padding-right:1rem;" class="fa-solid fa-user-ninja"></i>Worker</label>
+              <input type="radio" name="actype" id="contractorRadio" value="contractor" onclick="insertForm()"required />
+              <label for="actype"><i style="padding-right:1rem;" class="fa-solid fa-building-user"></i>Contractor</label>
+            </div>
+            <!-- Worker Form -->
+            <div id="worker" style="display:none;" >
+              <div class="inp profession">
+                <label><i class="fa-solid fa-briefcase" style="padding-right:1rem;"></i>Profession :</label>
+                <select name="profession" id="profession" required>
+                  <option value="carpenter">Carpenter</option>
+                  <option value="electrician">Electrician</option>
+                  <option value="plumber">Plumber</option>
+                  <option value="painter">Painter</option>
+                  <option value="mason">Mason</option>
+                  <option value="welder">Welder</option>
+                  <option value="fabricator">Fabricator</option>
+                  <option value="fitter">Fitter</option>
+                  <option value="mechanic">Mechanic</option>
+                  <option value="technician">Technician</option>
+                  <option value="other">Other</option>
+                  </select> 
+              </div>
+              <div class="inp experience">
+                <label><i class="fa-solid fa-calendar" style="padding-right:1rem;"></i>Experience :</label>
+                <input type="number" name="experience" id="experience" placeholder="Enter your experience in years" required />
+              </div>
+              <div class="inp location">
+                <label><i class="fa-solid fa-map-marker" style="padding-right:1rem;"></i>Location :</label>
+                <input type="text" name="location" id="location" placeholder="Enter your location" required />
+              </div>
+            </div>
+            <!-- Contractor form -->
+            <div id="contractor" style="display:none;">
+              <div class="inp company">
+                <label><i class="fa-solid fa-building" style="padding-right:1rem;"></i>Company :</label>
+                <input type="text" name="company" id="company" placeholder="Enter your company name" required />
+              </div>
+              <div class="inp location">
+                <label><i class="fa-solid fa-map-marker" style="padding-right:1rem;"></i>Location :</label>
+                <input type="text" name="location" id="location" placeholder="Enter your location" required />
+              </div>
+            </div>
+            <!-- Common form -->
+            <div class="inp password">
+              <label><i class="fa-solid fa-key" style="padding-right:1rem;"></i>Password :</label>
+              <input type="password" name="password" id="password" placeholder="Enter your password" required />
+            </div>
+            <div class="inp password">
+              <label><i class="fa-solid fa-key" style="padding-right:1rem;"></i>Confirm Password :</label>
+              <input type="password" name="cpassword" id="cpassword" placeholder="Confirm your password" required />
+            </div>
+            <div class="btns">
+              <button class="btn" onclick="goBack()">Go back to login</button> 
+              <button class="btn" onclick="signup()">Sign Up</button> 
+            </div>
+        </form>
+        </div>
+      </div>
+      
+    </div>
+  </main>
+  <footer class="row">
+    <cr class="col-sm-12 col-md-12 col-lg-6 text-center"
+      >Copyright &nbsp;<i class="fa-regular fa-copyright"> </i> &nbsp;2024
+      Bolishetty Adhithya. All rights reserved.</cr
+    >
+    <ul class="col-sm-12 col-md-12 col-lg-6">
+      <li>
+        <a
+          href="https://github.com/akash-masadi/"
+          target="_blank"
+          title="GitHub"
+          ><i class="fa-brands fa-github fa-2xl"></i
+        ></a>
+      </li>
+      <li>
+        <a
+          href="https://www.linkedin.com/in/akash-masadi-045477254/"
+          target="_blank"
+          title="LinkedIn"
+          ><i class="fa-brands fa-linkedin fa-2xl"></i
+        ></a>
+      </li>
+      <li>
+        <a href="https://wa.me/+917569902122" target="_blank" titel="Whatsapp"
+          ><i class="fa-brands fa-whatsapp fa-2xl"></i
+        ></a>
+      </li>
+      <li>
+        <a
+          href="https://www.twitter.com/akash_masadi/"
+          target="_blank"
+          title="Instagram"
+          ><i class="fa-brands fa-twitter fa-2xl"></i
+        ></a>
+      </li>
+      <li>
+        <a
+          href="https://www.instagram.com/akash_masadi/"
+          target="_blank"
+          title="Instagram"
+          ><i class="fa-brands fa-instagram fa-2xl"></i
+        ></a>
+      </li>
+    </ul>
+  </footer>
+</body>
+</html>
