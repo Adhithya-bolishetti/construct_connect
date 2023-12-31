@@ -3,14 +3,6 @@ body
     background-color: #000000;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
-main
-{
-    size: 100% 100%;
-    background-image: url("../assets/bg-black.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding: 10px;
-}
 nav
 {
     background-color: #000000;
@@ -18,6 +10,9 @@ nav
     padding: 5px;
     display: flex;
     justify-content: space-around;
+    align-items: center;
+    font-size: larger;
+    letter-spacing: 0.2rem;
 }
 nav ul{
     display: flex;
@@ -26,5 +21,85 @@ nav ul{
     align-items: center;
 }
 nav ul li{
-    width: 10rem;
+    padding: 0  2rem 0 2rem;
+}
+nav ul li a{
+    color: #ffffff;
+    text-decoration: none;
+}
+nav img
+{
+    width: 14rem;
+    height: 6rem;
+}
+nav .profile
+{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:0 1rem 0 1rem;
+}
+nav #dp
+{
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    padding: 0.2 rem;
+}
+nav .profile p{
+    margin: 0 1rem 0 1rem;
+}
+
+/* Main */
+main
+{
+    size: 100% 100%;
+    background-image: url("../assets/bg-ex.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 10px;
+}
+main .gradient
+{
+    background-image:radial-gradient(circle,rgb(0,0,0,0.9),rgb(0,0,0,0.9));
+    background-size: cover;
+}
+/* main .card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    padding: 4rem 0rem 10rem 0rem;
+    margin: 10px;
+} */
+main aside  {
+    background-color: #ff0000;
+}
+main section
+{
+    background-color: #ffffff;
+}
+/* Footer */
+footer{
+    background-color: #000;
+    height:5rem;
+    display: flex;
+    justify-content: space-around;
+    align-items:center ;
+    color:#fff;
+} 
+footer ul{    
+    display: flex;
+    list-style: none;
+    width: 30%;
+    justify-content: space-around;
+}
+footer ul a{
+    color:#fff;
+    text-decoration: none; 
+}
+footer ul a:hover{    
+    color:rgb(0, 255, 255);
 }
