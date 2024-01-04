@@ -15,16 +15,16 @@
   <main>
     <div class="gardient">
       <div class="card">
-        <form >
+        <form method="dialog">
             <h1>Login</h1>
             <div class="inp username">
               <label>Email / Username:</label>
-              <input type="email" name="email" id="email" placeholder="Enter your Email/Username" required />
+              <input type="email" name="email" id="email" placeholder="Enter your Email/Username" required autocomplete="email"/>
             </div>
             <div class="inp pword">
               <label>Password :</label>
-              <input type="password" name="password" id="password" placeholder="Enter your Password" required />
-              <a href="forgetpassword.html"><p>Forget password?<i class="fa-regular fa-face-frown"></i></p></a>
+              <input type="password" name="password" id="password" placeholder="Enter your Password" required autocomplete="current-passwords"/>
+              <a href="./forgetpassword.html"><p>Forget password?<i class="fa-regular fa-face-frown"></i></p></a>
             </div>
             <div class="btns">
               <button type="button" class="btn" onclick="signup()">Sign Up</button> 

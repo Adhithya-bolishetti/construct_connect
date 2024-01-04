@@ -8,8 +8,10 @@ function login()
 {
     let email =document.getElementById("email");
     let password =document.getElementById("password");
-    email.setAttribute("required","");
-    password.setAttribute("required","");
+    console.log("email: "+email.value);
+    // email.setAttribute("required","");
+    // password.setAttribute("required","");
+    console.log("email: "+email.value);
     if(email.value == "" || password.value == "")
     {
         alert("Please fill all the fields");
