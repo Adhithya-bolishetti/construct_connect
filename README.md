@@ -16,7 +16,7 @@
 
 ## Technology Stack
 
-- **Frontend:** HTML, CSS, JavaScript, React.js    
+- **Frontend:** HTML, CSS, JavaScript  
 
 ---
 
