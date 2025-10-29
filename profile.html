@@ -70,14 +70,31 @@
               </div>
             </div>
             <!-- Contractor form -->
-            <div id="contractor" style="display:none;">
+            <div id="customer" style="display:none;">
               <div class="inp company">
                 <label><i class="fa-solid fa-building" style="padding-right:1rem;"></i>Company :</label>
-                <input type="text" name="company" id="company" placeholder="Enter your company name" required />
+                <input type="text" name="company" id="company" placeholder="Enter your company name (optional)" />
               </div>
               <div class="inp location">
                 <label><i class="fa-solid fa-map-marker" style="padding-right:1rem;"></i>Location :</label>
                 <input type="text" name="location" id="location" placeholder="Enter your location" required />
+              </div>
+              <div class="inp work-types">
+                <label><i class="fa-solid fa-tools" style="padding-right:1rem;"></i>Types of Work Needed:</label>
+                <select name="workTypes" id="workTypes" multiple required style="height: 120px;">
+                  <option value="carpenter">Carpenter</option>
+                  <option value="electrician">Electrician</option>
+                  <option value="plumber">Plumber</option>
+                  <option value="painter">Painter</option>
+                  <option value="mason">Mason</option>
+                  <option value="welder">Welder</option>
+                  <option value="fabricator">Fabricator</option>
+                  <option value="fitter">Fitter</option>
+                  <option value="mechanic">Mechanic</option>
+                  <option value="technician">Technician</option>
+                  <option value="other">Other</option>
+                </select>
+                <small style="color: #ccc; font-size: 0.8rem;">Hold Ctrl to select multiple types</small>
               </div>
             </div>
             <div class="btns">
