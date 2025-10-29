@@ -335,6 +335,12 @@ class Dashboard {
         const budget = document.getElementById('projectBudget').value;
         const timeline = document.getElementById('projectTimeline').value;
         const location = document.getElementById('projectLocation').value;
+        
+        // Contact details
+        const contactName = document.getElementById('contactName').value;
+        const contactPhone = document.getElementById('contactPhone').value;
+        const contactEmail = document.getElementById('contactEmail').value;
+        const preferredContact = document.getElementById('preferredContact').value;
 
         const project = {
             id: Date.now().toString(),
@@ -346,6 +352,13 @@ class Dashboard {
             location,
             customerId: this.currentUser.id,
             customerName: `${this.currentUser.firstName} ${this.currentUser.lastName}`,
+            // Contact details
+            contactDetails: {
+                name: contactName,
+                phone: contactPhone,
+                email: contactEmail,
+                preferredMethod: preferredContact
+            },
             status: 'open',
             createdAt: new Date().toISOString()
         };
@@ -394,25 +407,108 @@ class Dashboard {
         const card = document.createElement('div');
         card.className = 'project-card';
         
+        const contactIcon = this.getContactIcon(project.contactDetails.preferredMethod);
+        const contactMethod = this.formatContactMethod(project.contactDetails.preferredMethod);
+        
         card.innerHTML = `
-            <h3>${project.title}</h3>
-            <p>${project.description}</p>
-            <div class="project-details">
-                <p><strong>Work Type:</strong> ${this.formatProfession(project.workType)}</p>
-                <p><strong>Budget:</strong> ₹${project.budget.toLocaleString()}</p>
-                <p><strong>Timeline:</strong> ${project.timeline} days</p>
-                <p><strong>Location:</strong> ${project.location}</p>
-                <p><strong>Posted by:</strong> ${project.customerName}</p>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="project-header">
+                <div class="project-title">
+                    <h3>${project.title}</h3>
+                    <p style="color: #ccc; margin: 0;">${project.description}</p>
+                </div>
                 <span class="project-status status-${project.status}">
                     ${project.status.charAt(0).toUpperCase() + project.status.slice(1)}
                 </span>
-                <small>Posted: ${new Date(project.createdAt).toLocaleDateString()}</small>
+            </div>
+            
+            <div class="project-details">
+                <p><strong><i class="fa-solid fa-briefcase"></i> Work Type:</strong> ${this.formatProfession(project.workType)}</p>
+                <p><strong><i class="fa-solid fa-indian-rupee-sign"></i> Budget:</strong> ₹${project.budget.toLocaleString()}</p>
+                <p><strong><i class="fa-solid fa-calendar-days"></i> Timeline:</strong> ${project.timeline} days</p>
+                <p><strong><i class="fa-solid fa-location-dot"></i> Location:</strong> ${project.location}</p>
+                <p><strong><i class="fa-solid fa-user"></i> Posted by:</strong> ${project.customerName}</p>
+            </div>
+            
+            <!-- Contact Details Section -->
+            <div class="contact-section">
+                <h4><i class="fa-solid fa-address-book"></i> Contact Details:</h4>
+                <div class="contact-details">
+                    <p><strong><i class="fa-solid fa-user"></i> Contact Person:</strong> ${project.contactDetails.name}</p>
+                    <p><strong><i class="fa-solid fa-phone"></i> Phone:</strong> ${project.contactDetails.phone}</p>
+                    ${project.contactDetails.email ? `<p><strong><i class="fa-solid fa-envelope"></i> Email:</strong> ${project.contactDetails.email}</p>` : ''}
+                    <p><strong><i class="fa-solid fa-comment"></i> Preferred Contact:</strong> ${contactIcon} ${contactMethod}</p>
+                </div>
+                <div class="contact-actions">
+                    <button class="contact-btn" onclick="dashboard.contactProject('${project.id}', 'phone')">
+                        <i class="fa-solid fa-phone"></i> Call Now
+                    </button>
+                    <button class="whatsapp-btn" onclick="dashboard.contactProject('${project.id}', 'whatsapp')">
+                        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                    </button>
+                    ${project.contactDetails.email ? `
+                    <button class="email-btn" onclick="dashboard.contactProject('${project.id}', 'email')">
+                        <i class="fa-solid fa-envelope"></i> Email
+                    </button>
+                    ` : ''}
+                </div>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #444;">
+                <small><i class="fa-solid fa-clock"></i> Posted: ${new Date(project.createdAt).toLocaleDateString()}</small>
+                <small><i class="fa-solid fa-eye"></i> ${Math.floor(Math.random() * 50) + 1} views</small>
             </div>
         `;
         
         return card;
+    }
+
+    getContactIcon(method) {
+        const icons = {
+            'phone': '📞',
+            'whatsapp': '💬',
+            'email': '📧',
+            'any': '📱'
+        };
+        return icons[method] || '📱';
+    }
+
+    formatContactMethod(method) {
+        const methods = {
+            'phone': 'Phone Call',
+            'whatsapp': 'WhatsApp',
+            'email': 'Email',
+            'any': 'Any Method'
+        };
+        return methods[method] || method;
+    }
+
+    contactProject(projectId, method) {
+        const project = this.projects.find(p => p.id === projectId);
+        if (!project) return;
+
+        const contact = project.contactDetails;
+        
+        switch(method) {
+            case 'phone':
+                alert(`Calling ${contact.name} at ${contact.phone}`);
+                // In a real app, you would use: window.open(`tel:${contact.phone}`);
+                break;
+            case 'whatsapp':
+                const message = `Hi ${contact.name}, I'm interested in your project "${project.title}" on Construct Connect`;
+                const whatsappUrl = `https://wa.me/${contact.phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
+                alert(`Opening WhatsApp to contact ${contact.name}`);
+                // In a real app, you would use: window.open(whatsappUrl, '_blank');
+                break;
+            case 'email':
+                if (contact.email) {
+                    const subject = `Interest in your project: ${project.title}`;
+                    const body = `Dear ${contact.name},\n\nI am interested in your project "${project.title}" posted on Construct Connect.\n\nBest regards,\n${this.currentUser.firstName} ${this.currentUser.lastName}`;
+                    const mailtoUrl = `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                    alert(`Opening email to contact ${contact.name}`);
+                    // In a real app, you would use: window.open(mailtoUrl);
+                }
+                break;
+        }
     }
 
     // Review Methods
