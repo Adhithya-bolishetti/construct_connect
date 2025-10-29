@@ -35,78 +35,81 @@
     </ul>
   </aside>
   
-  <!-- Workers Section -->
-  <section id="workers-section" class="active-section">
-    <h1><i class="fa-solid fa-users"></i> Find Workers</h1>
-    <div id="filters">
-      <form>
-        <label for="location"> Location:</label>
-        <input type="text" name="location" id="location" placeholder="Location" />
-        <label for="acType"> Profession:</label>
-        <select name="type" id="acType">
-          <option value="none">All Professions</option>
-          <option value="architect">Architect</option>
-          <option value="civil-engineer">Civil Engineer</option>
-          <option value="structural-engineer">Structural Engineer</option>
-          <option value="site-engineer">Site Engineer</option>
-          <option value="carpenter">Carpenter</option>
-          <option value="electrician">Electrician</option>
-          <option value="plumber">Plumber</option>
-          <option value="painter">Painter</option>
-          <option value="mason">Mason</option>
-          <option value="welder">Welder</option>
-          <option value="fabricator">Fabricator</option>
-          <option value="fitter">Fitter</option>
-          <option value="mechanic">Mechanic</option>
-          <option value="technician">Technician</option>
-          <option value="other">Other</option>
-        </select>
-        <label for="sort"> Sort by:</label>
-        <select name="sortby" id="sort">
-          <option value="none">Default</option>
-          <option value="experience">Experience</option>
-          <option value="rating">Rating</option>
-        </select>
-        <input type="button" value="Apply Filters" id="applyFilters">
-      </form>
-    </div>
-    <div id="workers-container">
-      <!-- Workers will be dynamically loaded here -->
-    </div>
-  </section>
+  <!-- Main Content Area -->
+  <main style="grid-area: section; padding: 1rem; margin: 1rem;">
+    <!-- Workers Section -->
+    <section id="workers-section" class="active-section">
+      <h1><i class="fa-solid fa-users"></i> Find Workers</h1>
+      <div id="filters">
+        <form>
+          <label for="location"> Location:</label>
+          <input type="text" name="location" id="location" placeholder="Location" />
+          <label for="acType"> Profession:</label>
+          <select name="type" id="acType">
+            <option value="none">All Professions</option>
+            <option value="architect">Architect</option>
+            <option value="civil-engineer">Civil Engineer</option>
+            <option value="structural-engineer">Structural Engineer</option>
+            <option value="site-engineer">Site Engineer</option>
+            <option value="carpenter">Carpenter</option>
+            <option value="electrician">Electrician</option>
+            <option value="plumber">Plumber</option>
+            <option value="painter">Painter</option>
+            <option value="mason">Mason</option>
+            <option value="welder">Welder</option>
+            <option value="fabricator">Fabricator</option>
+            <option value="fitter">Fitter</option>
+            <option value="mechanic">Mechanic</option>
+            <option value="technician">Technician</option>
+            <option value="other">Other</option>
+          </select>
+          <label for="sort"> Sort by:</label>
+          <select name="sortby" id="sort">
+            <option value="none">Default</option>
+            <option value="experience">Experience</option>
+            <option value="rating">Rating</option>
+          </select>
+          <input type="button" value="Apply Filters" id="applyFilters">
+        </form>
+      </div>
+      <div id="workers-container">
+        <!-- Workers will be dynamically loaded here -->
+      </div>
+    </section>
 
-  <!-- Projects Section -->
-  <section id="projects-section" class="section-hidden">
-    <h1><i class="fa-solid fa-bars-progress"></i> Projects</h1>
-    <div class="projects-header">
-      <button id="addProjectBtn" class="add-btn">
-        <i class="fa-solid fa-plus"></i> Add New Project
-      </button>
-    </div>
-    <div id="projects-container">
-      <!-- Projects will be dynamically loaded here -->
-    </div>
-  </section>
+    <!-- Projects Section -->
+    <section id="projects-section" class="section-hidden">
+      <h1><i class="fa-solid fa-bars-progress"></i> Projects</h1>
+      <div class="projects-header">
+        <button id="addProjectBtn" class="add-btn">
+          <i class="fa-solid fa-plus"></i> Add New Project
+        </button>
+      </div>
+      <div id="projects-container">
+        <!-- Projects will be dynamically loaded here -->
+      </div>
+    </section>
 
-  <!-- Payments Section -->
-  <section id="payments-section" class="section-hidden">
-    <h1><i class="fa-solid fa-receipt"></i> Payments</h1>
-    <div class="coming-soon">
-      <i class="fa-solid fa-tools fa-3x"></i>
-      <h2>Payments Section Coming Soon</h2>
-      <p>We're working on integrating secure payment features.</p>
-    </div>
-  </section>
+    <!-- Payments Section -->
+    <section id="payments-section" class="section-hidden">
+      <h1><i class="fa-solid fa-receipt"></i> Payments</h1>
+      <div class="coming-soon">
+        <i class="fa-solid fa-tools fa-3x"></i>
+        <h2>Payments Section Coming Soon</h2>
+        <p>We're working on integrating secure payment features.</p>
+      </div>
+    </section>
 
-  <!-- Help Section -->
-  <section id="help-section" class="section-hidden">
-    <h1><i class="fa-solid fa-circle-info"></i> Help & Support</h1>
-    <div class="coming-soon">
-      <i class="fa-solid fa-headset fa-3x"></i>
-      <h2>Help Center Coming Soon</h2>
-      <p>We're building a comprehensive help center for you.</p>
-    </div>
-  </section>
+    <!-- Help Section -->
+    <section id="help-section" class="section-hidden">
+      <h1><i class="fa-solid fa-circle-info"></i> Help & Support</h1>
+      <div class="coming-soon">
+        <i class="fa-solid fa-headset fa-3x"></i>
+        <h2>Help Center Coming Soon</h2>
+        <p>We're building a comprehensive help center for you.</p>
+      </div>
+    </section>
+  </main>
 
   <!-- Add Project Modal -->
   <div id="projectModal" class="modal">
