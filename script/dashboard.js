@@ -30,7 +30,7 @@ class Dashboard {
         if (this.currentUser.accountType === 'contractor') {
             userTypeElement.textContent = this.currentUser.company || 'Contractor';
         } else if (this.currentUser.accountType === 'worker') {
-            userTypeElement.textContent = this.currentUser.profession || 'Worker';
+            userTypeElement.textContent = this.formatProfession(this.currentUser.profession) || 'Worker';
         } else {
             userTypeElement.textContent = 'Customer';
         }
@@ -140,7 +140,10 @@ class Dashboard {
         document.querySelectorAll('#links a').forEach(link => {
             link.classList.remove('active');
         });
-        document.querySelector(`#links a[data-section="${sectionName}"]`).classList.add('active');
+        const activeLink = document.querySelector(`#links a[data-section="${sectionName}"]`);
+        if (activeLink) {
+            activeLink.classList.add('active');
+        }
     }
 
     // Workers Section Methods
@@ -239,6 +242,28 @@ class Dashboard {
         });
     }
 
+    formatProfession(profession) {
+        const professionMap = {
+            'architect': 'Architect',
+            'civil-engineer': 'Civil Engineer',
+            'structural-engineer': 'Structural Engineer',
+            'site-engineer': 'Site Engineer',
+            'carpenter': 'Carpenter',
+            'electrician': 'Electrician',
+            'plumber': 'Plumber',
+            'painter': 'Painter',
+            'mason': 'Mason',
+            'welder': 'Welder',
+            'fabricator': 'Fabricator',
+            'fitter': 'Fitter',
+            'mechanic': 'Mechanic',
+            'technician': 'Technician',
+            'other': 'Other'
+        };
+        
+        return professionMap[profession] || profession;
+    }
+
     createWorkerCard(worker) {
         const card = document.createElement('div');
         card.className = 'card';
@@ -252,12 +277,12 @@ class Dashboard {
             <img src="./assets/workerProfile.png" alt="${worker.firstName}">
             <div class="name">
                 <h1>${worker.firstName} ${worker.lastName}</h1>
-                <p>${worker.profession}</p> 
+                <p>${this.formatProfession(worker.profession)}</p> 
             </div>
             <div class="details">
                 <p><strong>Experience:</strong> ${worker.experience} years</p>
                 <p><strong>Location:</strong> ${worker.location}</p>
-                <p><strong>Rating:</strong> ${averageRating} ${typeof averageRating === 'number' ? '⭐' : ''}</p>
+                <p><strong>Rating:</strong> ${averageRating} ${typeof averageRating === 'string' ? '' : '⭐'}</p>
                 <p><strong>Contact:</strong> ${worker.mobileNumber || 'N/A'}</p>
                 
                 <div class="worker-actions">
@@ -293,7 +318,7 @@ class Dashboard {
     contactWorker(workerId) {
         const worker = this.workers.find(w => w.id === workerId);
         if (worker) {
-            alert(`Contacting ${worker.firstName} ${worker.lastName}\nPhone: ${worker.mobileNumber || 'Not available'}\nProfession: ${worker.profession}`);
+            alert(`Contacting ${worker.firstName} ${worker.lastName}\nPhone: ${worker.mobileNumber || 'Not available'}\nProfession: ${this.formatProfession(worker.profession)}`);
         }
     }
 
@@ -373,8 +398,8 @@ class Dashboard {
             <h3>${project.title}</h3>
             <p>${project.description}</p>
             <div class="project-details">
-                <p><strong>Work Type:</strong> ${project.workType}</p>
-                <p><strong>Budget:</strong> ₹${project.budget}</p>
+                <p><strong>Work Type:</strong> ${this.formatProfession(project.workType)}</p>
+                <p><strong>Budget:</strong> ₹${project.budget.toLocaleString()}</p>
                 <p><strong>Timeline:</strong> ${project.timeline} days</p>
                 <p><strong>Location:</strong> ${project.location}</p>
                 <p><strong>Posted by:</strong> ${project.customerName}</p>
