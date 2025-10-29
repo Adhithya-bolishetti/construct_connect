@@ -1,4 +1,10 @@
 function goBack() {
+    let x = document.getElementsByTagName("input");
+    console.log(x);
+    for (let i = 0; i < x.length; i++) {
+        x[i].removeAttribute("required");
+        console.log(x[i]);
+    }
     window.location.href = "./index.html";
 }
 
