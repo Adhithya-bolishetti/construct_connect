@@ -13,7 +13,7 @@
     <img src="./assets/logo-crop.png" alt="logo">
     <p>From Steel Beams to Team Dreams: The Construction Network</p>
     <div id="searchbar">
-      <input type="search" name="searching" id="searchWorker" placeholder=" Search for ..." spellcheck=true autocorrect=on>
+      <input type="search" name="searching" id="searchWorker" placeholder=" Search for workers..." spellcheck=true autocorrect=on>
       <button>Search</button>
     </div>
   </nav>
@@ -21,31 +21,30 @@
     <div class="profile">
       <img id="dp" src="./assets/profile.png" alt="profile">
       <div>
-        <h1>Construct Connect</h1>
-        <p>Construct Connect's Groups  Co.</p> 
+        <h1 id="userName">Construct Connect</h1>
+        <p id="userType">Construct Connect's Groups Co.</p> 
       </div>
-      
     </div>
     <ul id="links">
-      <li><a href="#"> <i class="fa-solid fa-house-user" ></i> Home</a></li>
-      <li><a href="#"><i class="fa-solid fa-bars-progress"></i>Projects</a></li>
-      <li><a href="#"><i class="fa-solid fa-bolt"></i>Services</a></li>
-      <li><a href="#"><i class="fa-solid fa-receipt"></i>Payments</a></li>
-      <li><a href="#"><i class="fa-solid fa-circle-info"></i>Help</a></li>
-      <li><a href="#"><i class="fa-solid fa-power-off"></i>Log out</a></li>
-      <li></li>
+      <li><a href="#" data-section="home"> <i class="fa-solid fa-house-user" ></i> Home</a></li>
+      <li><a href="#" data-section="workers"> <i class="fa-solid fa-users"></i> Workers</a></li>
+      <li><a href="#" data-section="projects"> <i class="fa-solid fa-bars-progress"></i> Projects</a></li>
+      <li><a href="#" data-section="payments"> <i class="fa-solid fa-receipt"></i> Payments</a></li>
+      <li><a href="#" data-section="help"> <i class="fa-solid fa-circle-info"></i> Help</a></li>
+      <li><a href="#" id="logoutBtn"> <i class="fa-solid fa-power-off"></i> Log out</a></li>
     </ul>
   </aside>
-  <section >
-    <h1><i class="fa-solid fa-house-user" ></i>Dashboard
-    </h1>
-    <div id="area">
-      <form id="filters">
-        <label for="location"> Location    :</label>
-        <input type="text" name="location" id="location" placeholder="Location" required />
-        <label for="acType"> Profession :</label>
+  
+  <!-- Workers Section -->
+  <section id="workers-section" class="active-section">
+    <h1><i class="fa-solid fa-users"></i> Find Workers</h1>
+    <div id="filters">
+      <form>
+        <label for="location"> Location:</label>
+        <input type="text" name="location" id="location" placeholder="Location" />
+        <label for="acType"> Profession:</label>
         <select name="type" id="acType">
-          <option value="none">none</option>
+          <option value="none">All Professions</option>
           <option value="carpenter">Carpenter</option>
           <option value="electrician">Electrician</option>
           <option value="plumber">Plumber</option>
@@ -58,110 +57,158 @@
           <option value="technician">Technician</option>
           <option value="other">Other</option>
         </select>
-        <label for="sort"> Sort by :</label>
+        <label for="sort"> Sort by:</label>
         <select name="sortby" id="sort">
-          <option value="none">none</option>
+          <option value="none">Default</option>
           <option value="experience">Experience</option>
           <option value="rating">Rating</option>
-          <option value="pay">Remuneration </option>
         </select>
-        <input type="button" value="Submit">
+        <input type="button" value="Apply Filters" id="applyFilters">
       </form>
     </div>
-    <div class="card">
-      <img src="./assets/workerProfile.png" alt="">
-      <div id="name">
-        <h1>Ayaan</h1>
-        <p>Electrician</p> 
-      </div>
-      <div id="details">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam perspiciatis tempore natus culpa eius eveniet. Aspernatur autem, dolorum quas tempore doloremque molestias voluptatum blanditiis eveniet dicta, fuga magnam, laudantium nobis?
-      </div>
+    <div id="workers-container">
+      <!-- Workers will be dynamically loaded here -->
     </div>
-    <div class="card">
-      <img src="./assets/workerProfile.png" alt="">
-      <div id="name">
-        <h1>Arjun</h1>
-        <p>Carpenter</p> 
-      </div>
-      <div id="details">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam perspiciatis tempore natus culpa eius eveniet. Aspernatur autem, dolorum quas tempore doloremque molestias voluptatum blanditiis eveniet dicta, fuga magnam, laudantium nobis?
-      </div>
-    </div>
-    <div class="card">
-      <img src="./assets/workerProfile.png" alt="">
-      <div id="name">
-        <h1>Arun</h1>
-        <p>Plumber</p> 
-      </div>
-      <div id="details">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam perspiciatis tempore natus culpa eius eveniet. Aspernatur autem, dolorum quas tempore doloremque molestias voluptatum blanditiis eveniet dicta, fuga magnam, laudantium nobis?
-      </div>
-    </div>
-    <div class="card">
-      <img src="./assets/workerProfile.png" alt="">
-      <div id="name">
-        <h1>Arjun</h1>
-        <p>Welder</p> 
-      </div>
-      <div id="details">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam perspiciatis tempore natus culpa eius eveniet. Aspernatur autem, dolorum quas tempore doloremque molestias voluptatum blanditiis eveniet dicta, fuga magnam, laudantium nobis?
-      </div>
-    </div>
-    <div class="card">
-      <img src="./assets/workerProfile.png" alt="">
-      <div id="name">
-        <h1>Akshay</h1>
-        <p>Technician</p> 
-      </div>
-      <div id="details">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam perspiciatis tempore natus culpa eius eveniet. Aspernatur autem, dolorum quas tempore doloremque molestias voluptatum blanditiis eveniet dicta, fuga magnam, laudantium nobis?
+  </section>
 
-      </div>
+  <!-- Projects Section -->
+  <section id="projects-section" class="section-hidden">
+    <h1><i class="fa-solid fa-bars-progress"></i> Projects</h1>
+    <div class="projects-header">
+      <button id="addProjectBtn" class="add-btn">
+        <i class="fa-solid fa-plus"></i> Add New Project
+      </button>
     </div>
-  </section>  
+    <div id="projects-container">
+      <!-- Projects will be dynamically loaded here -->
+    </div>
+  </section>
+
+  <!-- Payments Section -->
+  <section id="payments-section" class="section-hidden">
+    <h1><i class="fa-solid fa-receipt"></i> Payments</h1>
+    <div class="coming-soon">
+      <i class="fa-solid fa-tools fa-3x"></i>
+      <h2>Payments Section Coming Soon</h2>
+      <p>We're working on integrating secure payment features.</p>
+    </div>
+  </section>
+
+  <!-- Help Section -->
+  <section id="help-section" class="section-hidden">
+    <h1><i class="fa-solid fa-circle-info"></i> Help & Support</h1>
+    <div class="coming-soon">
+      <i class="fa-solid fa-headset fa-3x"></i>
+      <h2>Help Center Coming Soon</h2>
+      <p>We're building a comprehensive help center for you.</p>
+    </div>
+  </section>
+
+  <!-- Add Project Modal -->
+  <div id="projectModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Add New Project</h2>
+      <form id="projectForm">
+        <div class="form-group">
+          <label for="projectTitle">Project Title:</label>
+          <input type="text" id="projectTitle" name="projectTitle" required>
+        </div>
+        <div class="form-group">
+          <label for="projectDescription">Description:</label>
+          <textarea id="projectDescription" name="projectDescription" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="projectType">Work Type Needed:</label>
+          <select id="projectType" name="projectType" required>
+            <option value="">Select work type</option>
+            <option value="carpenter">Carpenter</option>
+            <option value="electrician">Electrician</option>
+            <option value="plumber">Plumber</option>
+            <option value="painter">Painter</option>
+            <option value="mason">Mason</option>
+            <option value="welder">Welder</option>
+            <option value="fabricator">Fabricator</option>
+            <option value="fitter">Fitter</option>
+            <option value="mechanic">Mechanic</option>
+            <option value="technician">Technician</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="projectBudget">Budget (₹):</label>
+          <input type="number" id="projectBudget" name="projectBudget" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="projectTimeline">Timeline (days):</label>
+          <input type="number" id="projectTimeline" name="projectTimeline" min="1" required>
+        </div>
+        <div class="form-group">
+          <label for="projectLocation">Location:</label>
+          <input type="text" id="projectLocation" name="projectLocation" required>
+        </div>
+        <button type="submit" class="submit-btn">Create Project</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Review Modal -->
+  <div id="reviewModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Add Review for <span id="workerReviewName"></span></h2>
+      <form id="reviewForm">
+        <input type="hidden" id="reviewWorkerId">
+        <div class="form-group">
+          <label>Rating:</label>
+          <div class="rating-stars">
+            <span class="star" data-rating="1">★</span>
+            <span class="star" data-rating="2">★</span>
+            <span class="star" data-rating="3">★</span>
+            <span class="star" data-rating="4">★</span>
+            <span class="star" data-rating="5">★</span>
+          </div>
+          <input type="hidden" id="reviewRating" name="reviewRating" required>
+        </div>
+        <div class="form-group">
+          <label for="reviewComment">Review Comment:</label>
+          <textarea id="reviewComment" name="reviewComment" rows="4" required placeholder="Share your experience working with this worker..."></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Submit Review</button>
+      </form>
+    </div>
+  </div>
+
   <footer class="row">
-    <cr class="col-sm-12 col-md-12 col-lg-6 text-center"
-    >Copyright &nbsp;<i class="fa-regular fa-copyright"> </i> &nbsp;2024
-    Constuct Connect. All rights reserved.</cr
-    >
+    <cr class="col-sm-12 col-md-12 col-lg-6 text-center">
+      Copyright &nbsp;<i class="fa-regular fa-copyright"> </i> &nbsp;2024
+      Construct Connect. All rights reserved.
+    </cr>
     <ul class="col-sm-12 col-md-12 col-lg-6">
       <li>
-        <a
-        href="https://github.com/adhithya-bolishetti/"
-        target="_blank"
-        title="GitHub"
-        ><i class="fa-brands fa-github fa-2xl"></i
-          ></a>
-        </li>
-        <li>
-          <a
-          href="https://www.linkedin.com/in/adhithya-bolishetti-232470-ad/"
-          target="_blank"
-          title="LinkedIn"
-          ><i class="fa-brands fa-linkedin fa-2xl"></i
-        ></a>
+        <a href="https://github.com/adhithya-bolishetti/" target="_blank" title="GitHub">
+          <i class="fa-brands fa-github fa-2xl"></i>
+        </a>
       </li>
       <li>
-        <a href="https://wa.me/+919392391909" target="_blank" titel="Whatsapp"
-          ><i class="fa-brands fa-whatsapp fa-2xl"></i
-        ></a>
+        <a href="https://www.linkedin.com/in/adhithya-bolishetti-232470-ad/" target="_blank" title="LinkedIn">
+          <i class="fa-brands fa-linkedin fa-2xl"></i>
+        </a>
       </li>
       <li>
-        <a
-          href="https://www.twitter.com/adhithya_24/"
-          target="_blank"
-          title="Instagram"
-          ><i class="fa-brands fa-twitter fa-2xl"></i
-        ></a>
+        <a href="https://wa.me/+919392391909" target="_blank" title="Whatsapp">
+          <i class="fa-brands fa-whatsapp fa-2xl"></i>
+        </a>
       </li>
       <li>
-        <a
-          href="https://www.instagram.com/adhithya_24/"
-          target="_blank"
-          title="Instagram"
-          ><i class="fa-brands fa-instagram fa-2xl"></i
-        ></a>
+        <a href="https://www.twitter.com/adhithya_24/" target="_blank" title="Twitter">
+          <i class="fa-brands fa-twitter fa-2xl"></i>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.instagram.com/adhithya_24/" target="_blank" title="Instagram">
+          <i class="fa-brands fa-instagram fa-2xl"></i>
+        </a>
       </li>
     </ul>
   </footer>
