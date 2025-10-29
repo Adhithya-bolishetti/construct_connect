@@ -108,84 +108,84 @@
     </div>
   </section>
 
-  <!-- Update the project modal in dashboard.html -->
-    <div id="projectModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Add New Project</h2>
-            <form id="projectForm">
-                <div class="form-group">
-                    <label for="projectTitle">Project Title:</label>
-                    <input type="text" id="projectTitle" name="projectTitle" required>
-                </div>
-                <div class="form-group">
-                    <label for="projectDescription">Description:</label>
-                    <textarea id="projectDescription" name="projectDescription" rows="4" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="projectType">Work Type Needed:</label>
-                    <select id="projectType" name="projectType" required>
-                        <option value="">Select work type</option>
-                        <option value="architect">Architect</option>
-                        <option value="civil-engineer">Civil Engineer</option>
-                        <option value="structural-engineer">Structural Engineer</option>
-                        <option value="site-engineer">Site Engineer</option>
-                        <option value="carpenter">Carpenter</option>
-                        <option value="electrician">Electrician</option>
-                        <option value="plumber">Plumber</option>
-                        <option value="painter">Painter</option>
-                        <option value="mason">Mason</option>
-                        <option value="welder">Welder</option>
-                        <option value="fabricator">Fabricator</option>
-                        <option value="fitter">Fitter</option>
-                        <option value="mechanic">Mechanic</option>
-                        <option value="technician">Technician</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="projectBudget">Budget (₹):</label>
-                    <input type="number" id="projectBudget" name="projectBudget" min="0" required>
-                </div>
-                <div class="form-group">
-                    <label for="projectTimeline">Timeline (days):</label>
-                    <input type="number" id="projectTimeline" name="projectTimeline" min="1" required>
-                </div>
-                <div class="form-group">
-                    <label for="projectLocation">Location:</label>
-                    <input type="text" id="projectLocation" name="projectLocation" required>
-                </div>
-                <!-- Contact Details Section -->
-                <div class="form-group">
-                    <label><i class="fa-solid fa-address-card"></i> Contact Details:</label>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div>
-                            <label for="contactName">Contact Person:</label>
-                            <input type="text" id="contactName" name="contactName" placeholder="Name of contact person" required>
-                        </div>
-                        <div>
-                            <label for="contactPhone">Phone Number:</label>
-                            <input type="tel" id="contactPhone" name="contactPhone" placeholder="Phone number" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="contactEmail">Email Address:</label>
-                    <input type="email" id="contactEmail" name="contactEmail" placeholder="Email address (optional)">
-                </div>
-                <div class="form-group">
-                    <label for="preferredContact">Preferred Contact Method:</label>
-                    <select id="preferredContact" name="preferredContact">
-                        <option value="phone">Phone Call</option>
-                        <option value="whatsapp">WhatsApp</option>
-                        <option value="email">Email</option>
-                        <option value="any">Any Method</option>
-                    </select>
-                </div>
-                <button type="submit" class="submit-btn">Create Project</button>
-            </form>
+  <!-- Add Project Modal -->
+  <div id="projectModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Add New Project</h2>
+      <form id="projectForm">
+        <div class="form-group">
+          <label for="projectTitle">Project Title:</label>
+          <input type="text" id="projectTitle" name="projectTitle" required>
         </div>
+        <div class="form-group">
+          <label for="projectDescription">Description:</label>
+          <textarea id="projectDescription" name="projectDescription" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="projectType">Work Type Needed:</label>
+          <select id="projectType" name="projectType" required>
+            <option value="">Select work type</option>
+            <option value="architect">Architect</option>
+            <option value="civil-engineer">Civil Engineer</option>
+            <option value="structural-engineer">Structural Engineer</option>
+            <option value="site-engineer">Site Engineer</option>
+            <option value="carpenter">Carpenter</option>
+            <option value="electrician">Electrician</option>
+            <option value="plumber">Plumber</option>
+            <option value="painter">Painter</option>
+            <option value="mason">Mason</option>
+            <option value="welder">Welder</option>
+            <option value="fabricator">Fabricator</option>
+            <option value="fitter">Fitter</option>
+            <option value="mechanic">Mechanic</option>
+            <option value="technician">Technician</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="projectBudget">Budget (₹):</label>
+          <input type="number" id="projectBudget" name="projectBudget" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="projectTimeline">Timeline (days):</label>
+          <input type="number" id="projectTimeline" name="projectTimeline" min="1" required>
+        </div>
+        <div class="form-group">
+          <label for="projectLocation">Location:</label>
+          <input type="text" id="projectLocation" name="projectLocation" required>
+        </div>
+        <!-- Contact Details Section -->
+        <div class="form-group">
+          <label><i class="fa-solid fa-address-card"></i> Contact Details:</label>
+          <div class="contact-grid">
+            <div>
+              <label for="contactName">Contact Person:</label>
+              <input type="text" id="contactName" name="contactName" placeholder="Name of contact person" required>
+            </div>
+            <div>
+              <label for="contactPhone">Phone Number:</label>
+              <input type="tel" id="contactPhone" name="contactPhone" placeholder="Phone number" required>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="contactEmail">Email Address:</label>
+          <input type="email" id="contactEmail" name="contactEmail" placeholder="Email address (optional)">
+        </div>
+        <div class="form-group">
+          <label for="preferredContact">Preferred Contact Method:</label>
+          <select id="preferredContact" name="preferredContact">
+            <option value="phone">Phone Call</option>
+            <option value="whatsapp">WhatsApp</option>
+            <option value="email">Email</option>
+            <option value="any">Any Method</option>
+          </select>
+        </div>
+        <button type="submit" class="submit-btn">Create Project</button>
+      </form>
     </div>
+  </div>
 
   <!-- Add Review Modal -->
   <div id="reviewModal" class="modal">
