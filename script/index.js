@@ -17,7 +17,7 @@ function login() {
 
     // Find user by email or username
     const user = users.find(u => 
-        u.email === email || u.username === email
+        u.email === email || (u.mobileNumber && u.mobileNumber === email)
     );
 
     if (user && user.password === password) {
