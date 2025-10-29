@@ -104,3 +104,33 @@ function dashboard() {
     alert("Profile completed successfully!");
     window.location.href = "./dashboard.html";
 }
+
+function clearForm() {
+    document.querySelector('form').reset();
+    document.getElementById("worker").style.display = "none";
+    document.getElementById("contractor").style.display = "none";
+    document.getElementById("customer").style.display = "none";
+}
+
+// Load user data if exists
+document.addEventListener('DOMContentLoaded', function() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+        document.getElementById("fname").value = currentUser.firstName || '';
+        document.getElementById("lname").value = currentUser.lastName || '';
+        document.getElementById("mobilenumber").value = currentUser.mobileNumber || '';
+        
+        if (currentUser.accountType) {
+            const radio = document.getElementById(`${currentUser.accountType}Radio`);
+            if (radio) {
+                radio.checked = true;
+                insertForm();
+            }
+        }
+    }
+});
+
+// Make functions global
+window.insertForm = insertForm;
+window.dashboard = dashboard;
+window.clearForm = clearForm;
