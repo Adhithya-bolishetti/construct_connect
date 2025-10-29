@@ -137,12 +137,6 @@ section{
     margin: 1rem;
     grid-area: section;
 }
-section
-{
-    /* background-color: #A1EEBD; */
-    /* display: flex;
-    justify-content: space-around; */
-}
 section form input[type="text"],select
 {
     margin: 0.2rem;
@@ -322,18 +316,23 @@ footer ul a:hover{
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.8);
+    overflow-y: auto; /* Enable vertical scrolling for the modal background */
 }
 
 .modal-content {
     background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9));
-    margin: 5% auto;
+    margin: 2% auto; /* Reduced from 5% to give more space */
     padding: 2rem;
     border-radius: 10px;
     width: 90%;
     max-width: 600px;
     border: 1px solid #7360DF;
     color: white;
+    position: relative;
+    max-height: 90vh; /* Limit height to 90% of viewport */
+    overflow-y: auto; /* Enable scrolling inside modal content */
 }
+
 
 .close {
     color: #aaa;
@@ -355,6 +354,7 @@ footer ul a:hover{
     display: block;
     margin-bottom: 0.5rem;
     color: #F2AFEF;
+    font-weight: bold;
 }
 
 .form-group input,
@@ -367,11 +367,47 @@ footer ul a:hover{
     background-color: #333;
     color: white;
     font-size: 1rem;
+    box-sizing: border-box; /* Include padding in width calculation */
 }
+
 
 .form-group textarea {
     resize: vertical;
     min-height: 100px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+/* Style for multiple select */
+.form-group select[multiple] {
+    height: 120px;
+    padding: 0.5rem;
+}
+.form-group select[multiple] option {
+    padding: 0.5rem;
+    background-color: #333;
+    color: white;
+}
+
+.form-group select[multiple] option:hover {
+    background-color: #7360DF;
+}
+
+/* Improve scrollbar for modal */
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+.modal-content::-webkit-scrollbar-track {
+    background: #333;
+    border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #7360DF;
+    border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #F2AFEF;
 }
 
 .submit-btn {
