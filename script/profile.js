@@ -1,14 +1,23 @@
 function insertForm() {
     const workerForm = document.getElementById("worker");
     const contractorForm = document.getElementById("contractor");
+    const customerForm = document.getElementById("customer");
     const workerRadio = document.getElementById("workerRadio");
+    const contractorRadio = document.getElementById("contractorRadio");
+    const customerRadio = document.getElementById("customerRadio");
     
     if (workerRadio.checked) {
         contractorForm.style.display = "none";
+        customerForm.style.display = "none";
         workerForm.style.display = "block";
-    } else {
+    } else if (contractorRadio.checked) {
         workerForm.style.display = "none";
+        customerForm.style.display = "none";
         contractorForm.style.display = "block";
+    } else if (customerRadio.checked) {
+        workerForm.style.display = "none";
+        contractorForm.style.display = "none";
+        customerForm.style.display = "block";
     }
 }
 
@@ -26,7 +35,6 @@ function dashboard() {
         return;
     }
 
-    // Update user data based on account type
     let userData = {
         ...currentUser,
         firstName,
@@ -50,10 +58,9 @@ function dashboard() {
             ...userData,
             profession,
             experience: parseInt(experience),
-            location,
-            rating: Math.floor(Math.random() * 5) + 1 // Random rating for demo
+            location
         };
-    } else {
+    } else if (accountType === 'contractor') {
         const company = document.getElementById("company").value;
         const location = document.getElementById("location").value;
 
@@ -66,6 +73,23 @@ function dashboard() {
             ...userData,
             company,
             location
+        };
+    } else if (accountType === 'customer') {
+        const company = document.getElementById("company").value;
+        const location = document.getElementById("location").value;
+        const workTypes = Array.from(document.getElementById("workTypes").selectedOptions)
+                               .map(option => option.value);
+
+        if (!location || workTypes.length === 0) {
+            alert("Please fill location and select at least one work type");
+            return;
+        }
+
+        userData = {
+            ...userData,
+            company: company || 'Individual Customer',
+            location,
+            workTypes
         };
     }
 
@@ -80,29 +104,3 @@ function dashboard() {
     alert("Profile completed successfully!");
     window.location.href = "./dashboard.html";
 }
-
-function clearForm() {
-    document.querySelector('form').reset();
-    document.getElementById("worker").style.display = "none";
-    document.getElementById("contractor").style.display = "none";
-}
-
-// Load user data if exists
-document.addEventListener('DOMContentLoaded', function() {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (currentUser) {
-        document.getElementById("fname").value = currentUser.firstName || '';
-        document.getElementById("lname").value = currentUser.lastName || '';
-        document.getElementById("mobilenumber").value = currentUser.mobileNumber || '';
-        
-        if (currentUser.accountType) {
-            document.getElementById(`${currentUser.accountType}Radio`).checked = true;
-            insertForm();
-        }
-    }
-});
-
-// Make functions global
-window.insertForm = insertForm;
-window.dashboard = dashboard;
-window.clear = clearForm;
