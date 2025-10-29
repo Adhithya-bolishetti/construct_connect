@@ -18,7 +18,7 @@ class Dashboard {
         this.setupEventListeners();
         this.setupModals();
         this.loadWorkers();
-        this.loadProjects();
+        // Don't load projects here - they'll be loaded when section is shown
         this.showSection('workers');
     }
 
@@ -123,6 +123,8 @@ class Dashboard {
     }
 
     showSection(sectionName) {
+        console.log('Showing section:', sectionName);
+        
         // Hide all sections
         document.querySelectorAll('section').forEach(section => {
             section.classList.add('section-hidden');
@@ -134,6 +136,13 @@ class Dashboard {
         if (targetSection) {
             targetSection.classList.remove('section-hidden');
             targetSection.classList.add('active-section');
+            
+            // Load data for the section when it's shown
+            if (sectionName === 'workers') {
+                this.loadWorkers();
+            } else if (sectionName === 'projects') {
+                this.loadProjects();
+            }
         }
 
         // Update active nav link
@@ -223,6 +232,8 @@ class Dashboard {
 
     renderWorkers(workers) {
         const container = document.getElementById('workers-container');
+        if (!container) return;
+        
         container.innerHTML = '';
 
         if (workers.length === 0) {
@@ -324,6 +335,11 @@ class Dashboard {
 
     // Projects Section Methods
     openProjectModal() {
+        // Pre-fill contact details with user info
+        document.getElementById('contactName').value = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+        document.getElementById('contactPhone').value = this.currentUser.mobileNumber || '';
+        document.getElementById('contactEmail').value = this.currentUser.email || '';
+        
         document.getElementById('projectModal').style.display = 'block';
         document.getElementById('projectForm').reset();
     }
@@ -341,6 +357,12 @@ class Dashboard {
         const contactPhone = document.getElementById('contactPhone').value;
         const contactEmail = document.getElementById('contactEmail').value;
         const preferredContact = document.getElementById('preferredContact').value;
+
+        // Validation
+        if (!title || !description || !workType || !budget || !timeline || !location || !contactName || !contactPhone) {
+            alert('Please fill all required fields');
+            return;
+        }
 
         const project = {
             id: Date.now().toString(),
@@ -363,20 +385,33 @@ class Dashboard {
             createdAt: new Date().toISOString()
         };
 
+        // Update projects array and save to localStorage
         this.projects.push(project);
         localStorage.setItem('constructConnectProjects', JSON.stringify(this.projects));
 
+        // Close modal and refresh projects display
         document.getElementById('projectModal').style.display = 'none';
-        this.loadProjects();
+        
+        // If we're currently in the projects section, reload the projects
+        if (document.getElementById('projects-section').classList.contains('active-section')) {
+            this.loadProjects();
+        }
         
         alert('Project posted successfully!');
     }
 
     loadProjects() {
+        console.log('Loading projects...');
+        
+        // Always reload from localStorage to get latest data
+        this.projects = JSON.parse(localStorage.getItem('constructConnectProjects')) || [];
+        console.log('Projects found:', this.projects);
+
         // Show only projects for current user if they're a customer
         let userProjects = this.projects;
         if (this.currentUser.accountType === 'customer') {
             userProjects = this.projects.filter(project => project.customerId === this.currentUser.id);
+            console.log('Filtered projects for customer:', userProjects);
         }
 
         this.renderProjects(userProjects);
@@ -384,6 +419,12 @@ class Dashboard {
 
     renderProjects(projects) {
         const container = document.getElementById('projects-container');
+        if (!container) {
+            console.error('Projects container not found!');
+            return;
+        }
+
+        console.log('Rendering projects:', projects);
         container.innerHTML = '';
 
         if (projects.length === 0) {
