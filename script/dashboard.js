@@ -305,6 +305,8 @@ class Dashboard {
 
     loadUserProjects() {
         const container = document.getElementById('userProjectsContainer');
+        if (!container) return;
+        
         container.innerHTML = '';
         
         // Get projects for current user
@@ -627,9 +629,13 @@ class Dashboard {
             createdAt: new Date().toISOString()
         };
 
+        console.log('Adding project:', project);
+
         // Update projects array and save to localStorage
         this.projects.push(project);
         localStorage.setItem('constructConnectProjects', JSON.stringify(this.projects));
+
+        console.log('Projects after adding:', this.projects);
 
         // Close modal and refresh projects display
         document.getElementById('projectModal').style.display = 'none';
@@ -651,7 +657,10 @@ class Dashboard {
         console.log('Loading projects...');
         
         // Always reload from localStorage to get latest data
-        this.projects = JSON.parse(localStorage.getItem('constructConnectProjects')) || [];
+        const storedProjects = localStorage.getItem('constructConnectProjects');
+        console.log('Stored projects:', storedProjects);
+        
+        this.projects = storedProjects ? JSON.parse(storedProjects) : [];
         console.log('Projects found:', this.projects);
 
         this.renderProjects(this.projects);
