@@ -42,40 +42,50 @@
       <h1><i class="fa-solid fa-users"></i> Find Workers</h1>
       <div id="filters">
         <form>
-          <label for="location"> Location:</label>
-          <input type="text" name="location" id="location" placeholder="Location" />
-          <label for="acType"> Profession:</label>
-          <select name="type" id="acType">
-            <option value="none">All Professions</option>
-            <option value="architect">Architect</option>
-            <option value="civil-engineer">Civil Engineer</option>
-            <option value="structural-engineer">Structural Engineer</option>
-            <option value="site-engineer">Site Engineer</option>
-            <option value="carpenter">Carpenter</option>
-            <option value="electrician">Electrician</option>
-            <option value="plumber">Plumber</option>
-            <option value="painter">Painter</option>
-            <option value="mason">Mason</option>
-            <option value="welder">Welder</option>
-            <option value="fabricator">Fabricator</option>
-            <option value="fitter">Fitter</option>
-            <option value="mechanic">Mechanic</option>
-            <option value="technician">Technician</option>
-            <option value="other">Other</option>
-          </select>
-          <label for="status"> Status:</label>
-          <select name="status" id="status">
-            <option value="all">All Workers</option>
-            <option value="active">Active Only</option>
-            <option value="inactive">Inactive Only</option>
-          </select>
-          <label for="sort"> Sort by:</label>
-          <select name="sortby" id="sort">
-            <option value="none">Default</option>
-            <option value="experience">Experience</option>
-            <option value="rating">Rating</option>
-          </select>
-          <input type="button" value="Apply Filters" id="applyFilters">
+          <div class="filter-group">
+            <label for="location"> Location:</label>
+            <input type="text" name="location" id="location" placeholder="Location" />
+          </div>
+          <div class="filter-group">
+            <label for="acType"> Profession:</label>
+            <select name="type" id="acType">
+              <option value="none">All Professions</option>
+              <option value="architect">Architect</option>
+              <option value="civil-engineer">Civil Engineer</option>
+              <option value="structural-engineer">Structural Engineer</option>
+              <option value="site-engineer">Site Engineer</option>
+              <option value="carpenter">Carpenter</option>
+              <option value="electrician">Electrician</option>
+              <option value="plumber">Plumber</option>
+              <option value="painter">Painter</option>
+              <option value="mason">Mason</option>
+              <option value="welder">Welder</option>
+              <option value="fabricator">Fabricator</option>
+              <option value="fitter">Fitter</option>
+              <option value="mechanic">Mechanic</option>
+              <option value="technician">Technician</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="status"> Status:</label>
+            <select name="status" id="status">
+              <option value="all">All Workers</option>
+              <option value="active">Active Only</option>
+              <option value="inactive">Inactive Only</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="sort"> Sort by:</label>
+            <select name="sortby" id="sort">
+              <option value="none">Default</option>
+              <option value="experience">Experience</option>
+              <option value="rating">Rating</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <input type="button" value="Apply Filters" id="applyFilters">
+          </div>
         </form>
       </div>
       <div id="workers-container">
@@ -162,8 +172,8 @@
                 </div>
               </div>
               
-              <!-- For Customers: Project Management -->
-              <div id="customerProjectsSection" class="projects-management" style="display: none;">
+              <!-- For Contractors: Project Management -->
+              <div id="contractorProjectsSection" class="projects-management" style="display: none;">
                 <h3>My Projects</h3>
                 <button id="addProjectBtn" class="add-btn">
                   <i class="fa-solid fa-plus"></i> Add New Project
@@ -241,8 +251,8 @@
           </div>
         </div>
         
-        <!-- Contractor/Customer fields -->
-        <div id="editBusinessFields" style="display: none;">
+        <!-- Contractor fields -->
+        <div id="editContractorFields" style="display: none;">
           <div class="form-group">
             <label for="editCompany">Company:</label>
             <input type="text" id="editCompany" name="editCompany">
@@ -274,9 +284,8 @@
           <textarea id="projectDescription" name="projectDescription" rows="4" required></textarea>
         </div>
         <div class="form-group">
-          <label for="projectType">Work Type Needed:</label>
-          <select id="projectType" name="projectType" required>
-            <option value="">Select work type</option>
+          <label for="projectWorkers">Worker Types Needed:</label>
+          <select id="projectWorkers" name="projectWorkers" multiple required style="height: 150px;">
             <option value="architect">Architect</option>
             <option value="civil-engineer">Civil Engineer</option>
             <option value="structural-engineer">Structural Engineer</option>
@@ -293,6 +302,9 @@
             <option value="technician">Technician</option>
             <option value="other">Other</option>
           </select>
+          <small style="color: #ccc; font-size: 0.8rem; display: block; margin-top: 0.5rem;">
+            Hold Ctrl (or Cmd on Mac) to select multiple worker types
+          </small>
         </div>
         <div class="form-group">
           <label for="projectBudget">Budget (₹):</label>
