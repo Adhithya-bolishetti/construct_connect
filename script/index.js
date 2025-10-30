@@ -7,18 +7,22 @@ function signup() {
 }
 
 function login() {
-    let email = document.getElementById("email").value;
+    let mobile = document.getElementById("mobile").value;
     let password = document.getElementById("password").value;
 
-    if (!email || !password) {
+    if (!mobile || !password) {
         alert("Please fill all the fields");
         return;
     }
 
-    // Find user by email or username
-    const user = users.find(u => 
-        u.email === email || (u.mobileNumber && u.mobileNumber === email)
-    );
+    // Mobile number validation
+    if (mobile.length !== 10 || !/^\d+$/.test(mobile)) {
+        alert("Please enter a valid 10-digit mobile number");
+        return;
+    }
+
+    // Find user by mobile number
+    const user = users.find(u => u.mobileNumber === mobile);
 
     if (user && user.password === password) {
         currentUser = user;
@@ -30,7 +34,7 @@ function login() {
             window.location.href = "./dashboard.html";
         }
     } else {
-        alert("Invalid email/username or password");
+        alert("Invalid mobile number or password");
     }
 }
 
