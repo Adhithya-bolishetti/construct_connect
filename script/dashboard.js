@@ -1,3 +1,5 @@
+[file name]: dashboard.js
+[file content begin]
 class Dashboard {
     constructor() {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -638,17 +640,19 @@ class Dashboard {
         // Close modal and refresh projects display
         document.getElementById('projectModal').style.display = 'none';
         
-        // If we're currently in the profile section, reload the user projects
-        if (document.getElementById('profile-section').classList.contains('active-section')) {
-            this.loadUserProjects();
-        }
-        
-        // Also reload main projects section if active
-        if (document.getElementById('projects-section').classList.contains('active-section')) {
-            this.loadProjects();
-        }
+        // Always reload the projects data
+        this.refreshAllProjectDisplays();
         
         alert('Project posted successfully!');
+    }
+
+    // NEW METHOD: Refresh all project displays
+    refreshAllProjectDisplays() {
+        // Refresh user projects in profile section
+        this.loadUserProjects();
+        
+        // Refresh main projects section
+        this.loadProjects();
     }
 
     loadProjects() {
