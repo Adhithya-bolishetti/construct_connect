@@ -1,5 +1,3 @@
-[file name]: dashboard.js
-[file content begin]
 class Dashboard {
     constructor() {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -41,15 +39,21 @@ class Dashboard {
     }
 
     setupEventListeners() {
-        // Navigation
-        document.querySelectorAll('#links a[data-section]').forEach(link => {
-            link.addEventListener('click', (e) => {
+        console.log('Setting up event listeners...');
+        
+        // Navigation - FIXED: Use event delegation for better reliability
+        const navLinks = document.getElementById('links');
+        if (navLinks) {
+            navLinks.addEventListener('click', (e) => {
                 e.preventDefault();
-                const section = e.target.getAttribute('data-section') || 
-                              e.target.closest('a').getAttribute('data-section');
-                this.showSection(section);
+                const link = e.target.closest('a[data-section]');
+                if (link) {
+                    const section = link.getAttribute('data-section');
+                    console.log('Navigation clicked:', section);
+                    this.showSection(section);
+                }
             });
-        });
+        }
 
         // Logout
         const logoutBtn = document.getElementById('logoutBtn');
@@ -113,6 +117,8 @@ class Dashboard {
     }
 
     setupModals() {
+        console.log('Setting up modals...');
+        
         // Edit Profile Modal
         const editProfileModal = document.getElementById('editProfileModal');
         const editProfileForm = document.getElementById('editProfileForm');
@@ -162,7 +168,8 @@ class Dashboard {
             }
 
             // Star rating
-            document.querySelectorAll('.star').forEach(star => {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach(star => {
                 star.addEventListener('click', () => {
                     const rating = star.getAttribute('data-rating');
                     this.setRating(rating);
@@ -181,13 +188,13 @@ class Dashboard {
             const projectModal = document.getElementById('projectModal');
             const reviewModal = document.getElementById('reviewModal');
 
-            if (e.target === editProfileModal) {
+            if (editProfileModal && e.target === editProfileModal) {
                 editProfileModal.style.display = 'none';
             }
-            if (e.target === projectModal) {
+            if (projectModal && e.target === projectModal) {
                 projectModal.style.display = 'none';
             }
-            if (e.target === reviewModal) {
+            if (reviewModal && e.target === reviewModal) {
                 reviewModal.style.display = 'none';
             }
         });
@@ -197,7 +204,8 @@ class Dashboard {
         console.log('Showing section:', sectionName);
         
         // Hide all sections
-        document.querySelectorAll('section').forEach(section => {
+        const sections = document.querySelectorAll('main section');
+        sections.forEach(section => {
             section.classList.add('section-hidden');
             section.classList.remove('active-section');
         });
@@ -216,12 +224,18 @@ class Dashboard {
             } else if (sectionName === 'profile') {
                 this.loadProfileData();
             }
+            
+            console.log(`Section ${sectionName} shown successfully`);
+        } else {
+            console.error(`Section ${sectionName} not found`);
         }
 
         // Update active nav link
-        document.querySelectorAll('#links a').forEach(link => {
+        const navLinks = document.querySelectorAll('#links a');
+        navLinks.forEach(link => {
             link.classList.remove('active');
         });
+        
         const activeLink = document.querySelector(`#links a[data-section="${sectionName}"]`);
         if (activeLink) {
             activeLink.classList.add('active');
@@ -230,6 +244,8 @@ class Dashboard {
 
     // Profile Section Methods
     loadProfileData() {
+        console.log('Loading profile data...');
+        
         // Set profile information
         const profileElements = {
             'profileName': `${this.currentUser.firstName} ${this.currentUser.lastName}`,
@@ -966,5 +982,6 @@ class Dashboard {
 
 // Initialize dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, initializing dashboard...');
     window.dashboard = new Dashboard();
 });
