@@ -33,12 +33,31 @@ nav{
     align-items: center;
     font-size: larger;
     letter-spacing: 0.2rem;
+    padding: 1rem 0;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+nav img {
+    width: 14rem;
+    height: 6rem;
+}
+nav p {
+    margin: 0;
+    text-align: center;
+    flex: 1;
+    min-width: 200px;
+}
+nav #searchbar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 nav #searchbar input[type="search"]
 {
     padding: 0.5rem;
     border: #fff;
     border-radius: 1rem;
+    min-width: 200px;
 }
 nav #searchbar input[type="search"]:hover
 {
@@ -46,13 +65,13 @@ nav #searchbar input[type="search"]:hover
 }
 nav #searchbar button
 {
-    margin: 10px;
-    padding: 0.5rem 1rem 0.5rem 1rem;
+    padding: 0.5rem 1rem;
     border-radius: 10px;
     border: none;
     background-color: #7360DF;
     color: #ffffff;
     font-size:large;
+    cursor: pointer;
 }
 nav #searchbar button:hover
 {
@@ -60,13 +79,7 @@ nav #searchbar button:hover
     color: #000000;
 }
 
-img
-{
-    width: 14rem;
-    height: 6rem;
-}
 aside{
-    /* position: fixed; */
     padding:1rem;
     grid-area: aside;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9));
@@ -80,9 +93,22 @@ aside{
 }
 @media (max-width: 768px) {
     aside {
-        width: 100%; /* Set width to 100% for smaller screens */
-        margin-right: 0; /* Remove margin */
-        float: none; /* Remove float */
+        width: 100%;
+        margin-right: 0;
+        float: none;
+    }
+    nav {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 0.5rem;
+    }
+    nav #searchbar {
+        width: 100%;
+        justify-content: center;
+    }
+    nav #searchbar input[type="search"] {
+        min-width: 150px;
+        flex: 1;
     }
 }
 aside .profile
@@ -122,20 +148,34 @@ aside ul li{
 aside ul li a{
     color: #ffffff;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
 }
 aside ul li a:hover
 {
     color: #A1EEBD;
+    background: rgba(255,255,255,0.1);
+}
+aside ul li a.active {
+    color: #F2AFEF;
     font-weight: bold;
+    background: rgba(115, 96, 223, 0.2);
 }
 aside i,section i{
-    margin-left: 1rem;
-    margin-right:2rem;
+    margin-left: 0;
+    margin-right:0;
+    width: 20px;
+    text-align: center;
 }
 section{
     padding: 1rem;
     margin: 1rem;
     grid-area: section;
+    min-height: 60vh;
 }
 section
 {
@@ -210,11 +250,11 @@ footer{
     grid-area: footer;
     background-color: #000;
     height:5rem;
-    position:sticky;
     display: flex;
     justify-content: space-around;
     align-items:center ;
     color:#fff;
+    padding: 0 1rem;
 } 
 footer ul{    
     display: flex;
@@ -239,6 +279,85 @@ footer ul a:hover{
     display: block;
 }
 
+/* Empty State Styles */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #ccc;
+}
+
+.empty-state i {
+    color: #7360DF;
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    color: #F2AFEF;
+    margin-bottom: 1rem;
+}
+
+/* Filter Styles */
+#filters {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+}
+
+#filters form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: end;
+    padding: 0 !important;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 150px;
+    flex: 1;
+}
+
+.filter-group label {
+    color: #F2AFEF;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.filter-group input,
+.filter-group select {
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: none;
+    background-color: #333;
+    color: white;
+    font-size: 1rem;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    outline: 2px solid #F2AFEF;
+    background-color: #444;
+}
+
+.filter-group input[type="button"] {
+    background-color: #7360DF;
+    color: white;
+    cursor: pointer;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    margin-top: 1.5rem;
+}
+
+.filter-group input[type="button"]:hover {
+    background-color: #F2AFEF;
+    color: #000000;
+}
+
 /* Project Styles */
 .projects-header {
     display: flex;
@@ -258,11 +377,13 @@ footer ul a:hover{
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    transition: all 0.3s ease;
 }
 
 .add-btn:hover {
     background-color: #F2AFEF;
     color: #000000;
+    transform: translateY(-2px);
 }
 
 .project-card {
@@ -326,12 +447,12 @@ footer ul a:hover{
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.8);
-    overflow-y: auto; /* Enable vertical scrolling for the modal background */
+    overflow-y: auto;
 }
 
 .modal-content {
     background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9));
-    margin: 2% auto; /* Reduced from 5% to give more space */
+    margin: 2% auto;
     padding: 2rem;
     border-radius: 10px;
     width: 90%;
@@ -339,8 +460,8 @@ footer ul a:hover{
     border: 1px solid #7360DF;
     color: white;
     position: relative;
-    max-height: 90vh; /* Limit height to 90% of viewport */
-    overflow-y: auto; /* Enable scrolling inside modal content */
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .close {
@@ -349,6 +470,7 @@ footer ul a:hover{
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    line-height: 1;
 }
 
 .close:hover {
@@ -384,7 +506,7 @@ footer ul a:hover{
     background-color: #333;
     color: white;
     font-size: 1rem;
-    box-sizing: border-box; /* Include padding in width calculation */
+    box-sizing: border-box;
 }
 
 .form-group textarea {
@@ -402,6 +524,7 @@ footer ul a:hover{
     cursor: pointer;
     font-size: 1rem;
     width: 100%;
+    transition: all 0.3s ease;
 }
 
 .submit-btn:hover {
@@ -475,6 +598,7 @@ footer ul a:hover{
     display: flex;
     gap: 0.5rem;
     margin-top: 1rem;
+    flex-wrap: wrap;
 }
 
 .contact-btn, .review-btn {
@@ -763,11 +887,13 @@ footer ul a:hover{
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
 }
 
 .edit-btn:hover {
     background-color: #F2AFEF;
     color: #000000;
+    transform: translateY(-2px);
 }
 
 .status-section, .projects-management {
@@ -781,6 +907,7 @@ footer ul a:hover{
     display: flex;
     align-items: center;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .status-btn {
@@ -790,6 +917,7 @@ footer ul a:hover{
     cursor: pointer;
     font-weight: bold;
     transition: all 0.3s ease;
+    min-width: 100px;
 }
 
 .status-btn.active {
@@ -820,6 +948,8 @@ footer ul a:hover{
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .user-project-header h4 {
@@ -855,16 +985,22 @@ footer ul a:hover{
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    transition: all 0.3s ease;
 }
 
 .delete-btn:hover {
     background-color: #ff5252;
+    transform: translateY(-2px);
 }
 
 .no-projects {
     text-align: center;
     padding: 2rem;
     color: #ccc;
+}
+
+.no-projects i {
+    margin-bottom: 1rem;
 }
 
 /* Status badges for workers */
@@ -887,13 +1023,12 @@ footer ul a:hover{
     color: #fff;
 }
 
-/* Active navigation link */
-#links a.active {
-    color: #F2AFEF;
-    font-weight: bold;
+/* Loading states */
+.contact-btn:active, .whatsapp-btn:active, .email-btn:active, .review-btn:active {
+    transform: translateY(0);
 }
 
-/* Responsive Design */
+/* Additional responsive adjustments */
 @media (max-width: 768px) {
     .modal-content {
         margin: 10% auto;
@@ -963,34 +1098,43 @@ footer ul a:hover{
     .user-project-details {
         grid-template-columns: 1fr;
     }
+    
+    .filter-group {
+        min-width: 100%;
+    }
+    
+    #filters form {
+        flex-direction: column;
+    }
 }
 
-/* Loading states */
-.contact-btn:active, .whatsapp-btn:active, .email-btn:active, .review-btn:active {
-    transform: translateY(0);
-}
-
-/* Additional filters for workers section */
-#filters form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
-}
-
-#filters label {
-    color: #F2AFEF;
-    font-weight: bold;
-}
-
-#filters input, #filters select {
-    padding: 0.5rem;
-    border-radius: 5px;
-    border: none;
-    background-color: #333;
-    color: white;
-}
-
-#filters input:focus, #filters select:focus {
-    outline: 2px solid #F2AFEF;
+@media (max-width: 480px) {
+    nav img {
+        width: 10rem;
+        height: 4rem;
+    }
+    
+    nav p {
+        font-size: 0.9rem;
+    }
+    
+    section {
+        padding: 0.5rem;
+        margin: 0.5rem;
+    }
+    
+    .profile-card, .project-card, .card {
+        padding: 1rem;
+    }
+    
+    footer {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    footer ul {
+        width: 100%;
+    }
 }
