@@ -1,3 +1,4 @@
+
 class Dashboard {
     constructor() {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -25,9 +26,8 @@ class Dashboard {
     loadProjectsFromStorage() {
         try {
             const stored = localStorage.getItem('constructConnectProjects');
-            console.log('Raw stored projects:', stored);
             const projects = stored ? JSON.parse(stored) : [];
-            console.log('Parsed projects:', projects);
+            console.log('Projects loaded from storage:', projects);
             return projects;
         } catch (error) {
             console.error('Error loading projects from storage:', error);
@@ -474,17 +474,25 @@ class Dashboard {
         return card;
     }
 
+    // FIXED: Delete project method to properly sync both sections
     deleteProject(projectId) {
+        console.log('Attempting to delete project:', projectId);
+        console.log('Current projects before deletion:', this.projects);
+        
         if (confirm('Are you sure you want to delete this project?')) {
+            // Find the project to be deleted for logging
+            const projectToDelete = this.projects.find(p => p.id === projectId);
+            console.log('Project to delete:', projectToDelete);
+            
             // Remove project from array
             this.projects = this.projects.filter(project => project.id !== projectId);
+            console.log('Projects after deletion:', this.projects);
             
             // Update localStorage
             this.saveProjectsToStorage();
             
-            // Reload projects
-            this.loadUserProjects();
-            this.loadProjects();
+            // FIXED: Always refresh both project displays regardless of current section
+            this.refreshAllProjectDisplays();
             
             alert('Project deleted successfully!');
         }
@@ -704,7 +712,7 @@ class Dashboard {
         }
     }
 
-    // FIXED: Projects Section Methods - Complete rewrite
+    // Projects Section Methods
     openProjectModal() {
         const modal = document.getElementById('projectModal');
         if (!modal) {
@@ -797,30 +805,36 @@ class Dashboard {
         console.log('Project added successfully');
     }
 
+    // FIXED: Enhanced refresh method to ensure both sections are always synchronized
     refreshAllProjectDisplays() {
         console.log('Refreshing all project displays...');
         
-        // Refresh user projects in profile section
+        // Always reload from storage first to ensure we have the latest data
+        this.projects = this.loadProjectsFromStorage();
+        
+        // Refresh user projects in profile section (customer's own projects)
         this.loadUserProjects();
         
-        // Refresh main projects section
+        // Refresh main projects section (all projects)
         this.loadProjects();
+        
+        console.log('All project displays refreshed');
     }
 
     loadProjects() {
         console.log('Loading projects for display...');
         
-        // Reload from storage to ensure we have latest data
-        this.projects = this.loadProjectsFromStorage();
-        console.log('Projects to display:', this.projects);
+        // Note: We don't reload from storage here because refreshAllProjectDisplays already did it
+        // This ensures we're always working with the same data
         
+        console.log('Projects to display:', this.projects);
         this.renderProjects(this.projects);
     }
 
     renderProjects(projects) {
         const container = document.getElementById('projects-container');
         if (!container) {
-            console.error('Projects container not found!');
+            console.log('Projects container not found (section might be hidden)');
             return;
         }
 
@@ -847,7 +861,6 @@ class Dashboard {
                 const card = this.createProjectCard(project);
                 if (card) {
                     container.appendChild(card);
-                    console.log(`Project ${index + 1} rendered successfully`);
                 }
             } catch (error) {
                 console.error(`Error rendering project ${index + 1}:`, error, project);
@@ -965,21 +978,16 @@ class Dashboard {
         switch(method) {
             case 'phone':
                 alert(`Calling ${contact.name} at ${contact.phone}`);
-                // In a real app: window.open(`tel:${contact.phone}`);
                 break;
             case 'whatsapp':
                 const message = `Hi ${contact.name}, I'm interested in your project "${project.title}" on Construct Connect`;
-                const whatsappUrl = `https://wa.me/${contact.phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
-                alert(`Opening WhatsApp to contact ${contact.name}`);
-                // In a real app: window.open(whatsappUrl, '_blank');
+                alert(`Opening WhatsApp to contact ${contact.name}\nMessage: ${message}`);
                 break;
             case 'email':
                 if (contact.email) {
                     const subject = `Interest in your project: ${project.title}`;
                     const body = `Dear ${contact.name},\n\nI am interested in your project "${project.title}" posted on Construct Connect.\n\nBest regards,\n${this.currentUser.firstName} ${this.currentUser.lastName}`;
-                    const mailtoUrl = `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                    alert(`Opening email to contact ${contact.name}`);
-                    // In a real app: window.open(mailtoUrl);
+                    alert(`Opening email to contact ${contact.name}\nSubject: ${subject}`);
                 }
                 break;
         }
