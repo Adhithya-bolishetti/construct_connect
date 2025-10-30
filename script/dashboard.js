@@ -18,7 +18,6 @@ class Dashboard {
         this.setupEventListeners();
         this.setupModals();
         this.loadWorkers();
-        // Don't load projects here - they'll be loaded when section is shown
         this.showSection('workers');
     }
 
@@ -70,13 +69,37 @@ class Dashboard {
             this.applyFilters();
         });
 
-        // Add Project
+        // Edit Profile
+        document.getElementById('editProfileBtn').addEventListener('click', () => {
+            this.openEditProfileModal();
+        });
+
+        // Status Toggle
+        document.getElementById('statusToggleBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            this.toggleWorkerStatus();
+        });
+
+        // Add Project (from profile)
         document.getElementById('addProjectBtn').addEventListener('click', () => {
             this.openProjectModal();
         });
     }
 
     setupModals() {
+        // Edit Profile Modal
+        const editProfileModal = document.getElementById('editProfileModal');
+        const editProfileForm = document.getElementById('editProfileForm');
+
+        document.querySelector('#editProfileModal .close').addEventListener('click', () => {
+            editProfileModal.style.display = 'none';
+        });
+
+        editProfileForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.updateProfile();
+        });
+
         // Project Modal
         const projectModal = document.getElementById('projectModal');
         const projectForm = document.getElementById('projectForm');
@@ -113,6 +136,9 @@ class Dashboard {
 
         // Close modal when clicking outside
         window.addEventListener('click', (e) => {
+            if (e.target === editProfileModal) {
+                editProfileModal.style.display = 'none';
+            }
             if (e.target === projectModal) {
                 projectModal.style.display = 'none';
             }
@@ -142,6 +168,8 @@ class Dashboard {
                 this.loadWorkers();
             } else if (sectionName === 'projects') {
                 this.loadProjects();
+            } else if (sectionName === 'profile') {
+                this.loadProfileData();
             }
         }
 
@@ -155,6 +183,203 @@ class Dashboard {
         }
     }
 
+    // Profile Section Methods
+    loadProfileData() {
+        // Set profile information
+        document.getElementById('profileName').textContent = 
+            `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+        document.getElementById('profileFirstName').textContent = this.currentUser.firstName || '-';
+        document.getElementById('profileLastName').textContent = this.currentUser.lastName || '-';
+        document.getElementById('profileEmail').textContent = this.currentUser.email || '-';
+        document.getElementById('profileMobile').textContent = this.currentUser.mobileNumber || '-';
+        document.getElementById('profileAccountType').textContent = this.currentUser.accountType || '-';
+        document.getElementById('profileProfession').textContent = this.currentUser.profession ? this.formatProfession(this.currentUser.profession) : '-';
+        document.getElementById('profileExperience').textContent = this.currentUser.experience ? `${this.currentUser.experience} years` : '-';
+        document.getElementById('profileCompany').textContent = this.currentUser.company || '-';
+        document.getElementById('profileLocation').textContent = this.currentUser.location || '-';
+        document.getElementById('profileLocationDetail').textContent = this.currentUser.location || '-';
+        
+        // Show/hide sections based on account type
+        if (this.currentUser.accountType === 'worker') {
+            document.getElementById('workerStatusSection').style.display = 'block';
+            document.getElementById('customerProjectsSection').style.display = 'none';
+            this.updateStatusButton();
+        } else if (this.currentUser.accountType === 'customer') {
+            document.getElementById('workerStatusSection').style.display = 'none';
+            document.getElementById('customerProjectsSection').style.display = 'block';
+            this.loadUserProjects();
+        } else {
+            document.getElementById('workerStatusSection').style.display = 'none';
+            document.getElementById('customerProjectsSection').style.display = 'none';
+        }
+    }
+
+    openEditProfileModal() {
+        // Pre-fill form with current user data
+        document.getElementById('editFirstName').value = this.currentUser.firstName || '';
+        document.getElementById('editLastName').value = this.currentUser.lastName || '';
+        document.getElementById('editEmail').value = this.currentUser.email || '';
+        document.getElementById('editMobile').value = this.currentUser.mobileNumber || '';
+        document.getElementById('editLocation').value = this.currentUser.location || '';
+        
+        // Show/hide fields based on account type
+        if (this.currentUser.accountType === 'worker') {
+            document.getElementById('editWorkerFields').style.display = 'block';
+            document.getElementById('editBusinessFields').style.display = 'none';
+            document.getElementById('editProfession').value = this.currentUser.profession || '';
+            document.getElementById('editExperience').value = this.currentUser.experience || '';
+        } else {
+            document.getElementById('editWorkerFields').style.display = 'none';
+            document.getElementById('editBusinessFields').style.display = 'block';
+            document.getElementById('editCompany').value = this.currentUser.company || '';
+        }
+        
+        document.getElementById('editProfileModal').style.display = 'block';
+    }
+
+    updateProfile() {
+        const firstName = document.getElementById('editFirstName').value;
+        const lastName = document.getElementById('editLastName').value;
+        const email = document.getElementById('editEmail').value;
+        const mobile = document.getElementById('editMobile').value;
+        const location = document.getElementById('editLocation').value;
+        
+        // Update current user
+        this.currentUser.firstName = firstName;
+        this.currentUser.lastName = lastName;
+        this.currentUser.email = email;
+        this.currentUser.mobileNumber = mobile;
+        this.currentUser.location = location;
+        
+        // Update specific fields based on account type
+        if (this.currentUser.accountType === 'worker') {
+            this.currentUser.profession = document.getElementById('editProfession').value;
+            this.currentUser.experience = parseInt(document.getElementById('editExperience').value) || 0;
+        } else {
+            this.currentUser.company = document.getElementById('editCompany').value;
+        }
+        
+        // Update in localStorage
+        const users = JSON.parse(localStorage.getItem('constructConnectUsers')) || [];
+        const userIndex = users.findIndex(u => u.id === this.currentUser.id);
+        if (userIndex !== -1) {
+            users[userIndex] = this.currentUser;
+            localStorage.setItem('constructConnectUsers', JSON.stringify(users));
+            localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+        }
+        
+        // Update UI
+        this.loadUserProfile();
+        this.loadProfileData();
+        
+        document.getElementById('editProfileModal').style.display = 'none';
+        alert('Profile updated successfully!');
+    }
+
+    toggleWorkerStatus() {
+        // Toggle worker status
+        this.currentUser.status = this.currentUser.status === 'active' ? 'inactive' : 'active';
+        
+        // Update in localStorage
+        const users = JSON.parse(localStorage.getItem('constructConnectUsers')) || [];
+        const userIndex = users.findIndex(u => u.id === this.currentUser.id);
+        if (userIndex !== -1) {
+            users[userIndex] = this.currentUser;
+            localStorage.setItem('constructConnectUsers', JSON.stringify(users));
+            localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+        }
+        
+        this.updateStatusButton();
+        alert(`Status updated to ${this.currentUser.status}`);
+    }
+
+    updateStatusButton() {
+        const statusBtn = document.getElementById('statusToggleBtn');
+        const statusText = document.getElementById('statusText');
+        
+        if (this.currentUser.status === 'active') {
+            statusBtn.classList.remove('inactive');
+            statusBtn.classList.add('active');
+            statusText.textContent = 'Active';
+        } else {
+            statusBtn.classList.remove('active');
+            statusBtn.classList.add('inactive');
+            statusText.textContent = 'Inactive';
+        }
+    }
+
+    loadUserProjects() {
+        const container = document.getElementById('userProjectsContainer');
+        container.innerHTML = '';
+        
+        // Get projects for current user
+        const userProjects = this.projects.filter(project => project.customerId === this.currentUser.id);
+        
+        if (userProjects.length === 0) {
+            container.innerHTML = `
+                <div class="no-projects">
+                    <p>You haven't created any projects yet.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        userProjects.forEach(project => {
+            const projectCard = this.createUserProjectCard(project);
+            container.appendChild(projectCard);
+        });
+    }
+
+    createUserProjectCard(project) {
+        const card = document.createElement('div');
+        card.className = 'user-project-card';
+        
+        card.innerHTML = `
+            <div class="user-project-header">
+                <h4>${project.title}</h4>
+                <span class="project-status status-${project.status}">
+                    ${project.status.charAt(0).toUpperCase() + project.status.slice(1)}
+                </span>
+            </div>
+            <div class="user-project-details">
+                <p><strong>Work Type:</strong> ${this.formatProfession(project.workType)}</p>
+                <p><strong>Budget:</strong> ₹${project.budget.toLocaleString()}</p>
+                <p><strong>Timeline:</strong> ${project.timeline} days</p>
+                <p><strong>Location:</strong> ${project.location}</p>
+                <p><strong>Posted:</strong> ${new Date(project.createdAt).toLocaleDateString()}</p>
+            </div>
+            <div class="user-project-actions">
+                <button class="delete-btn" data-project-id="${project.id}">
+                    <i class="fa-solid fa-trash"></i> Delete
+                </button>
+            </div>
+        `;
+        
+        // Add delete event listener
+        card.querySelector('.delete-btn').addEventListener('click', (e) => {
+            const projectId = e.target.closest('.delete-btn').getAttribute('data-project-id');
+            this.deleteProject(projectId);
+        });
+        
+        return card;
+    }
+
+    deleteProject(projectId) {
+        if (confirm('Are you sure you want to delete this project?')) {
+            // Remove project from array
+            this.projects = this.projects.filter(project => project.id !== projectId);
+            
+            // Update localStorage
+            localStorage.setItem('constructConnectProjects', JSON.stringify(this.projects));
+            
+            // Reload projects
+            this.loadUserProjects();
+            this.loadProjects(); // Reload main projects section if active
+            
+            alert('Project deleted successfully!');
+        }
+    }
+
     // Workers Section Methods
     handleSearch() {
         const searchTerm = document.getElementById('searchWorker').value.toLowerCase();
@@ -164,9 +389,10 @@ class Dashboard {
     applyFilters() {
         const location = document.getElementById('location').value.toLowerCase();
         const profession = document.getElementById('acType').value;
+        const status = document.getElementById('status').value;
         const sortBy = document.getElementById('sort').value;
 
-        this.filterAndSortWorkers({ location, profession, sortBy });
+        this.filterAndSortWorkers({ location, profession, status, sortBy });
     }
 
     loadWorkers() {
@@ -206,6 +432,13 @@ class Dashboard {
         if (filters.profession && filters.profession !== 'none') {
             filtered = filtered.filter(worker =>
                 worker.profession === filters.profession
+            );
+        }
+
+        // Apply status filter
+        if (filters.status && filters.status !== 'all') {
+            filtered = filtered.filter(worker =>
+                worker.status === filters.status
             );
         }
 
@@ -294,6 +527,7 @@ class Dashboard {
                 <p><strong>Experience:</strong> ${worker.experience} years</p>
                 <p><strong>Location:</strong> ${worker.location}</p>
                 <p><strong>Rating:</strong> ${averageRating} ${typeof averageRating === 'string' ? '' : '⭐'}</p>
+                <p><strong>Status:</strong> <span class="status-badge ${worker.status || 'inactive'}">${worker.status || 'Inactive'}</span></p>
                 <p><strong>Contact:</strong> ${worker.mobileNumber || 'N/A'}</p>
                 
                 <div class="worker-actions">
@@ -392,7 +626,12 @@ class Dashboard {
         // Close modal and refresh projects display
         document.getElementById('projectModal').style.display = 'none';
         
-        // If we're currently in the projects section, reload the projects
+        // If we're currently in the profile section, reload the user projects
+        if (document.getElementById('profile-section').classList.contains('active-section')) {
+            this.loadUserProjects();
+        }
+        
+        // Also reload main projects section if active
         if (document.getElementById('projects-section').classList.contains('active-section')) {
             this.loadProjects();
         }
@@ -407,14 +646,7 @@ class Dashboard {
         this.projects = JSON.parse(localStorage.getItem('constructConnectProjects')) || [];
         console.log('Projects found:', this.projects);
 
-        // Show only projects for current user if they're a customer
-        let userProjects = this.projects;
-        if (this.currentUser.accountType === 'customer') {
-            userProjects = this.projects.filter(project => project.customerId === this.currentUser.id);
-            console.log('Filtered projects for customer:', userProjects);
-        }
-
-        this.renderProjects(userProjects);
+        this.renderProjects(this.projects);
     }
 
     renderProjects(projects) {
@@ -431,8 +663,8 @@ class Dashboard {
             container.innerHTML = `
                 <div class="card" style="text-align: center; padding: 3rem;">
                     <i class="fa-solid fa-clipboard-list fa-3x" style="color: #7360DF; margin-bottom: 1rem;"></i>
-                    <h3>No projects yet</h3>
-                    <p>${this.currentUser.accountType === 'customer' ? 'Create your first project to get started!' : 'No projects available at the moment'}</p>
+                    <h3>No projects available</h3>
+                    <p>Check back later for new projects</p>
                 </div>
             `;
             return;
