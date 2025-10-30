@@ -172,8 +172,8 @@
                 </div>
               </div>
               
-              <!-- For Contractors: Project Management -->
-              <div id="contractorProjectsSection" class="projects-management" style="display: none;">
+              <!-- For Customers: Project Management -->
+              <div id="customerProjectsSection" class="projects-management" style="display: none;">
                 <h3>My Projects</h3>
                 <button id="addProjectBtn" class="add-btn">
                   <i class="fa-solid fa-plus"></i> Add New Project
@@ -251,17 +251,17 @@
           </div>
         </div>
         
-        <!-- Contractor fields -->
-        <div id="editContractorFields" style="display: none;">
+        <!-- Customer fields -->
+        <div id="editCustomerFields" style="display: none;">
           <div class="form-group">
-            <label for="editCompany">Company:</label>
+            <label for="editCompany">Company (optional):</label>
             <input type="text" id="editCompany" name="editCompany">
           </div>
         </div>
         
         <div class="form-group">
           <label for="editLocation">Location:</label>
-          <input type="text" id="editLocation" name="editLocation" required>
+          <input type="text" id="editLocation" name="editLocation">
         </div>
         
         <button type="submit" class="submit-btn">Save Changes</button>
@@ -285,7 +285,7 @@
         </div>
         <div class="form-group">
           <label for="projectWorkers">Worker Types Needed:</label>
-          <select id="projectWorkers" name="projectWorkers" multiple required style="height: 150px;">
+          <select id="projectWorkers" name="projectWorkers" multiple style="height: 150px;">
             <option value="architect">Architect</option>
             <option value="civil-engineer">Civil Engineer</option>
             <option value="structural-engineer">Structural Engineer</option>
@@ -316,7 +316,7 @@
         </div>
         <div class="form-group">
           <label for="projectLocation">Location:</label>
-          <input type="text" id="projectLocation" name="projectLocation" required>
+          <input type="text" id="projectLocation" name="projectLocation">
         </div>
         <!-- Contact Details Section -->
         <div class="form-group">
@@ -370,7 +370,7 @@
         </div>
         <div class="form-group">
           <label for="reviewComment">Review Comment:</label>
-          <textarea id="reviewComment" name="reviewComment" rows="4" required placeholder="Share your experience working with this worker..."></textarea>
+          <textarea id="reviewComment" name="reviewComment" rows="4" placeholder="Share your experience working with this worker..."></textarea>
         </div>
         <button type="submit" class="submit-btn">Submit Review</button>
       </form>
