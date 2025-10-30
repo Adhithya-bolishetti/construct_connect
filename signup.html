@@ -16,7 +16,7 @@
     <div class="gardient">
       <div class="card">
         <form method="dialog">
-            <h1>Create a new acount</h1>
+            <h1>Create a new account</h1>
             <div class="inp fname">
               <label><i class="fa-solid fa-font" style="padding-right:1rem;"></i>First Name:</label>
               <input type="text" name="fname" id="fname" placeholder="Enter your first name" required/>
@@ -25,18 +25,16 @@
               <label><i class="fa-solid fa-font" style="padding-right:1rem;"></i>Last Name:</label>
               <input type="text" name="lname" id="lname" placeholder="Enter your last name" required />
           </div>
-            <div class="inp email">
-              <label><i class="fa-solid fa-at" style="padding-right:1rem;"></i>Email :</label>
-              <input type="email" name="email" id="email" placeholder="(optional) Enter your Email" />
+            <div class="inp mobile">
+              <label><i class="fa-solid fa-mobile" style="padding-right:1rem;"></i>Mobile Number:</label>
+              <input type="tel" name="mobile" id="mobile" placeholder="Enter your mobile number" required />
           </div>
 
             <!-- Radio buttons for account type -->
             <label><i class="fa-regular fa-user" style="padding-right:1rem;"></i>Type of Account :</label>
             <div class="actype">
-              <input type="radio" name="actype" id="workerRadio" value="worker"  required />
+              <input type="radio" name="actype" id="workerRadio" value="worker" required />
               <label for="workerRadio"><i style="padding-right:1rem;" class="fa-solid fa-user-ninja"></i>Worker</label>
-              <input type="radio" name="actype" id="contractorRadio" value="contractor" required />
-              <label for="contractorRadio"><i style="padding-right:1rem;" class="fa-solid fa-building-user"></i>Contractor</label>
               <input type="radio" name="actype" id="customerRadio" value="customer" required />
               <label for="customerRadio"><i style="padding-right:1rem;" class="fa-solid fa-user-tie"></i>Customer</label>
             </div>
@@ -56,7 +54,6 @@
         </form>
         </div>
       </div>
-      
     </div>
   </main>
   <footer class="row">
