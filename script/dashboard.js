@@ -681,7 +681,7 @@ class Dashboard {
         }
     }
 
-    // Projects Section Methods
+    // Projects Section Methods - FIXED VERSION
     openProjectModal() {
         const modal = document.getElementById('projectModal');
         if (!modal) return;
@@ -700,8 +700,8 @@ class Dashboard {
         const description = document.getElementById('projectDescription').value;
         const workerTypes = Array.from(document.getElementById('projectWorkers').selectedOptions)
                                 .map(option => option.value);
-        const budget = document.getElementById('projectBudget').value;
-        const timeline = document.getElementById('projectTimeline').value;
+        const budget = parseInt(document.getElementById('projectBudget').value) || 0;
+        const timeline = parseInt(document.getElementById('projectTimeline').value) || 0;
         const location = document.getElementById('projectLocation').value || this.currentUser.location;
         
         // Contact details
@@ -717,12 +717,12 @@ class Dashboard {
         }
 
         const project = {
-            id: Date.now().toString(),
+            id: 'project_' + Date.now().toString(),
             title,
             description,
             workerTypes,
-            budget: parseInt(budget),
-            timeline: parseInt(timeline),
+            budget: budget,
+            timeline: timeline,
             location,
             customerId: this.currentUser.id,
             customerName: `${this.currentUser.firstName} ${this.currentUser.lastName}`,
@@ -737,9 +737,21 @@ class Dashboard {
             createdAt: new Date().toISOString()
         };
 
-        // Update projects array and save to localStorage
-        this.projects.push(project);
-        localStorage.setItem('constructConnectProjects', JSON.stringify(this.projects));
+        console.log('Adding project:', project);
+
+        // Get current projects from localStorage
+        const existingProjects = JSON.parse(localStorage.getItem('constructConnectProjects')) || [];
+        
+        // Add new project
+        existingProjects.push(project);
+        
+        // Save back to localStorage
+        localStorage.setItem('constructConnectProjects', JSON.stringify(existingProjects));
+        
+        // Update local projects array
+        this.projects = existingProjects;
+
+        console.log('Projects after adding:', this.projects);
 
         // Close modal and refresh projects display
         document.getElementById('projectModal').style.display = 'none';
@@ -751,6 +763,8 @@ class Dashboard {
     }
 
     refreshAllProjectDisplays() {
+        console.log('Refreshing all project displays...');
+        
         // Refresh user projects in profile section
         this.loadUserProjects();
         
@@ -759,9 +773,15 @@ class Dashboard {
     }
 
     loadProjects() {
+        console.log('Loading projects...');
+        
         // Always reload from localStorage to get latest data
         const storedProjects = localStorage.getItem('constructConnectProjects');
+        console.log('Stored projects from localStorage:', storedProjects);
+        
         this.projects = storedProjects ? JSON.parse(storedProjects) : [];
+        console.log('Projects loaded:', this.projects);
+
         this.renderProjects(this.projects);
     }
 
@@ -772,6 +792,7 @@ class Dashboard {
             return;
         }
 
+        console.log('Rendering projects:', projects);
         container.innerHTML = '';
 
         if (projects.length === 0) {
@@ -785,6 +806,7 @@ class Dashboard {
             return;
         }
 
+        // Render all projects (not just current user's)
         projects.forEach(project => {
             const card = this.createProjectCard(project);
             container.appendChild(card);
