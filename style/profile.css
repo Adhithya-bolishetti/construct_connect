@@ -4,18 +4,19 @@ html{
 body
 {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    /* width: 100vw; */
     padding: 0;
     margin: 0;
-    letter-spacing: 0.rem;
+    letter-spacing: 0.1rem;
+    background-color: #000000;
+    color: #ffffff;
 }
 nav
 {
     background-color: #000000;
     color: #ffffff;
-    padding:0rem 0.5rem 0rem 5rem;
+    padding: 1rem 0 1rem 5rem;
     display: flex;
-    justify-content:space-between;
+    justify-content: flex-start;
 }
 nav img
 {
@@ -25,144 +26,154 @@ nav img
 main
 {
     background-image: url("../assets/bg-black.png");
-    background-repeat:no-repeat;
+    background-repeat: no-repeat;
     background-position: center;
-    background-blend-mode: darken;
     background-size: cover;
-    height: 100%;
-    /* padding: 10px; */
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
 }
-main .gradient
+.gardient
 {
-    background-image:radial-gradient(circle,rgb(0,0,0,0.9),rgb(0,0,0,0.9));
-    background-size: cover;
+    background: radial-gradient(circle, rgba(0,0,0,0.9), rgba(0,0,0,0.9));
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-main .card{
+.card{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     color: #ffffff;
-    padding: 10rem 0rem 10rem 0rem;
-    
+    padding: 2rem 0;
+    width: 100%;
+    max-width: 600px;
 }
-main .card form
+.card form
 {
-    display:flex;
+    display: flex;
     flex-direction: column;
     background-color: #000000;
     color: #ffffff;
-    padding: 3em;
-    /* margin: 10px; */
-
+    padding: 2rem;
     border-radius: 10px;
     box-shadow: 0px 0px 10px 0px #B4B4B3;
+    width: 100%;
 }
-main .card form input[type="radio"]
+.card form h1 {
+    text-align: center;
+    color: #F2AFEF;
+    margin-bottom: 1.5rem;
+}
+.card form input[type="radio"]
 {
-    appearance:calc(1.5rem + 0.5vw);
-    transform: scale(1.5);
+    transform: scale(1.2);
     margin: 10px;
-    /* outline: none; */
 }
-main .card form input[type="radio"]:checked
+.card form input[type="radio"]:checked
 {
-    transform: scale(2);
-    margin: 10px;
+    transform: scale(1.4);
 }
-main .card form .contractor
+.card form label
 {
-    display: none;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-
-}
-
-main .card form label
-{
-    margin: 10px;
+    margin: 10px 0 5px 0;
     color: #ffffff;
-    border: #ffffff;
-    padding: 0 10px 0 10px;
+    font-weight: bold;
 }
-main .card form input[type="text"],input[type="password"],input[type="mobilenumber"],input[type="number"],input[type="date"],input[type="tel"],select
+.card form input[type="text"],
+.card form input[type="password"],
+.card form input[type="tel"],
+.card form input[type="number"],
+.card form select
 {
-    margin: 10px;
-    padding: 10px;
+    margin: 5px 0 15px 0;
+    padding: 12px;
     border-radius: 10px;
     border: none;
-    width:40rem;
-    background-color: #ffffff;
-    color: #000000;
+    width: 100%;
+    background-color: #333;
+    color: #ffffff;
+    font-size: 1rem;
+    box-sizing: border-box;
 }
-main .card form .inp
+.card form .inp
 {
-    padding: 10px;
+    padding: 5px 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
 }
-main .card form .btns
+.card form .btns
 {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    margin-top: 1rem;
 }
-main .card form .pword a{
-    color: #ffffff;
-    text-decoration: none;
-    letter-spacing: 0.1rem;
+.card form .actype {
+    display: flex;
+    gap: 2rem;
+    margin: 1rem 0;
+    flex-wrap: wrap;
 }
-main .card form .pword a:hover{
-    color: #ADE4DB;
-    text-decoration: underline;
+.card form .actype label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
-img
-{
-    width: 14rem;
-    height: 10rem;
-    background-size: contain;
+.card form .actype label:hover {
+    background-color: rgba(255,255,255,0.1);
 }
-
 .profile
 {
-    grid-area: profile;
-    display:flex;
-    justify-content: space-around;
-    align-items: center;
-    padding:0 1rem 0 1rem;
-    font-size: large;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+.profile img
+{
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #7360DF;
 }
 
 /* Buttons */
-main .card form button
+.card form button
 {
     margin: 10px;
-    padding: 1rem 2rem 1rem 2rem;
+    padding: 1rem 2rem;
     border-radius: 10px;
     border: none;
     background-color: #7360DF;
     color: #ffffff;
-    font-size:large;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
 }
-main .card form button:hover
+.card form button:hover
 {
-    background-color: #428ae2;
+    background-color: #F2AFEF;
     color: #000000;
+    transform: translateY(-2px);
 }
-
-
-
 
 /* Footer */
 footer{
     background-color: #000;
-    height:5rem;
+    height: 5rem;
     display: flex;
     justify-content: space-around;
-    align-items:center ;
-    color:#fff;
+    align-items: center;
+    color: #fff;
+    padding: 0 1rem;
 } 
 footer ul{    
     display: flex;
@@ -171,9 +182,63 @@ footer ul{
     justify-content: space-around;
 }
 footer ul a{
-    color:#fff;
+    color: #fff;
     text-decoration: none; 
 }
 footer ul a:hover{    
-    color:rgb(0, 255, 255);
+    color: rgb(0, 255, 255);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav {
+        padding: 1rem 0 1rem 2rem;
+    }
+    
+    .card form {
+        padding: 1.5rem;
+        margin: 0 1rem;
+    }
+    
+    .card form .btns {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .card form button {
+        width: 100%;
+        margin: 5px 0;
+    }
+    
+    .card form .actype {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    footer {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    footer ul {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    nav img {
+        width: 6rem;
+        height: 4rem;
+    }
+    
+    .card form {
+        padding: 1rem;
+    }
+    
+    .profile img {
+        width: 100px;
+        height: 100px;
+    }
 }
