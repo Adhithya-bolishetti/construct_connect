@@ -26,8 +26,8 @@ class Dashboard {
             `${this.currentUser.firstName} ${this.currentUser.lastName}`;
         
         const userTypeElement = document.getElementById('userType');
-        if (this.currentUser.accountType === 'contractor') {
-            userTypeElement.textContent = this.currentUser.company || 'Contractor';
+        if (this.currentUser.accountType === 'customer') {
+            userTypeElement.textContent = this.currentUser.company || 'Customer';
         } else if (this.currentUser.accountType === 'worker') {
             userTypeElement.textContent = this.formatProfession(this.currentUser.profession) || 'Worker';
         }
@@ -200,11 +200,11 @@ class Dashboard {
         // Show/hide sections based on account type
         if (this.currentUser.accountType === 'worker') {
             document.getElementById('workerStatusSection').style.display = 'block';
-            document.getElementById('contractorProjectsSection').style.display = 'none';
+            document.getElementById('customerProjectsSection').style.display = 'none';
             this.updateStatusButton();
-        } else if (this.currentUser.accountType === 'contractor') {
+        } else if (this.currentUser.accountType === 'customer') {
             document.getElementById('workerStatusSection').style.display = 'none';
-            document.getElementById('contractorProjectsSection').style.display = 'block';
+            document.getElementById('customerProjectsSection').style.display = 'block';
             this.loadUserProjects();
         }
     }
@@ -220,12 +220,12 @@ class Dashboard {
         // Show/hide fields based on account type
         if (this.currentUser.accountType === 'worker') {
             document.getElementById('editWorkerFields').style.display = 'block';
-            document.getElementById('editContractorFields').style.display = 'none';
+            document.getElementById('editCustomerFields').style.display = 'none';
             document.getElementById('editProfession').value = this.currentUser.profession || '';
             document.getElementById('editExperience').value = this.currentUser.experience || '';
-        } else if (this.currentUser.accountType === 'contractor') {
+        } else if (this.currentUser.accountType === 'customer') {
             document.getElementById('editWorkerFields').style.display = 'none';
-            document.getElementById('editContractorFields').style.display = 'block';
+            document.getElementById('editCustomerFields').style.display = 'block';
             document.getElementById('editCompany').value = this.currentUser.company || '';
         }
         
@@ -250,7 +250,7 @@ class Dashboard {
         if (this.currentUser.accountType === 'worker') {
             this.currentUser.profession = document.getElementById('editProfession').value;
             this.currentUser.experience = parseInt(document.getElementById('editExperience').value) || 0;
-        } else if (this.currentUser.accountType === 'contractor') {
+        } else if (this.currentUser.accountType === 'customer') {
             this.currentUser.company = document.getElementById('editCompany').value;
         }
         
@@ -579,6 +579,7 @@ class Dashboard {
         document.getElementById('contactName').value = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
         document.getElementById('contactPhone').value = this.currentUser.mobileNumber || '';
         document.getElementById('contactEmail').value = this.currentUser.email || '';
+        document.getElementById('projectLocation').value = this.currentUser.location || '';
         
         document.getElementById('projectModal').style.display = 'block';
         document.getElementById('projectForm').reset();
@@ -591,7 +592,7 @@ class Dashboard {
                                 .map(option => option.value);
         const budget = document.getElementById('projectBudget').value;
         const timeline = document.getElementById('projectTimeline').value;
-        const location = document.getElementById('projectLocation').value;
+        const location = document.getElementById('projectLocation').value || this.currentUser.location;
         
         // Contact details
         const contactName = document.getElementById('contactName').value;
@@ -600,7 +601,7 @@ class Dashboard {
         const preferredContact = document.getElementById('preferredContact').value;
 
         // Validation
-        if (!title || !description || workerTypes.length === 0 || !budget || !timeline || !location || !contactName || !contactPhone) {
+        if (!title || !description || !budget || !timeline || !contactName || !contactPhone) {
             alert('Please fill all required fields');
             return;
         }
