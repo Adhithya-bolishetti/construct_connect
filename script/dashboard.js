@@ -235,14 +235,12 @@ class Dashboard {
     updateProfile() {
         const firstName = document.getElementById('editFirstName').value;
         const lastName = document.getElementById('editLastName').value;
-        const email = document.getElementById('editEmail').value;
         const mobile = document.getElementById('editMobile').value;
         const location = document.getElementById('editLocation').value;
         
         // Update current user
         this.currentUser.firstName = firstName;
         this.currentUser.lastName = lastName;
-        this.currentUser.email = email;
         this.currentUser.mobileNumber = mobile;
         this.currentUser.location = location;
         
