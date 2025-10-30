@@ -30,8 +30,6 @@ class Dashboard {
             userTypeElement.textContent = this.currentUser.company || 'Contractor';
         } else if (this.currentUser.accountType === 'worker') {
             userTypeElement.textContent = this.formatProfession(this.currentUser.profession) || 'Worker';
-        } else {
-            userTypeElement.textContent = 'Customer';
         }
     }
 
@@ -202,15 +200,12 @@ class Dashboard {
         // Show/hide sections based on account type
         if (this.currentUser.accountType === 'worker') {
             document.getElementById('workerStatusSection').style.display = 'block';
-            document.getElementById('customerProjectsSection').style.display = 'none';
+            document.getElementById('contractorProjectsSection').style.display = 'none';
             this.updateStatusButton();
-        } else if (this.currentUser.accountType === 'customer') {
+        } else if (this.currentUser.accountType === 'contractor') {
             document.getElementById('workerStatusSection').style.display = 'none';
-            document.getElementById('customerProjectsSection').style.display = 'block';
+            document.getElementById('contractorProjectsSection').style.display = 'block';
             this.loadUserProjects();
-        } else {
-            document.getElementById('workerStatusSection').style.display = 'none';
-            document.getElementById('customerProjectsSection').style.display = 'none';
         }
     }
 
@@ -225,12 +220,12 @@ class Dashboard {
         // Show/hide fields based on account type
         if (this.currentUser.accountType === 'worker') {
             document.getElementById('editWorkerFields').style.display = 'block';
-            document.getElementById('editBusinessFields').style.display = 'none';
+            document.getElementById('editContractorFields').style.display = 'none';
             document.getElementById('editProfession').value = this.currentUser.profession || '';
             document.getElementById('editExperience').value = this.currentUser.experience || '';
-        } else {
+        } else if (this.currentUser.accountType === 'contractor') {
             document.getElementById('editWorkerFields').style.display = 'none';
-            document.getElementById('editBusinessFields').style.display = 'block';
+            document.getElementById('editContractorFields').style.display = 'block';
             document.getElementById('editCompany').value = this.currentUser.company || '';
         }
         
@@ -255,7 +250,7 @@ class Dashboard {
         if (this.currentUser.accountType === 'worker') {
             this.currentUser.profession = document.getElementById('editProfession').value;
             this.currentUser.experience = parseInt(document.getElementById('editExperience').value) || 0;
-        } else {
+        } else if (this.currentUser.accountType === 'contractor') {
             this.currentUser.company = document.getElementById('editCompany').value;
         }
         
@@ -318,7 +313,9 @@ class Dashboard {
         if (userProjects.length === 0) {
             container.innerHTML = `
                 <div class="no-projects">
+                    <i class="fa-solid fa-clipboard-list fa-2x" style="color: #7360DF; margin-bottom: 1rem;"></i>
                     <p>You haven't created any projects yet.</p>
+                    <p>Click "Add New Project" to get started!</p>
                 </div>
             `;
             return;
@@ -342,7 +339,7 @@ class Dashboard {
                 </span>
             </div>
             <div class="user-project-details">
-                <p><strong>Work Type:</strong> ${this.formatProfession(project.workType)}</p>
+                <p><strong>Work Type:</strong> ${this.formatWorkerTypes(project.workerTypes)}</p>
                 <p><strong>Budget:</strong> ₹${project.budget.toLocaleString()}</p>
                 <p><strong>Timeline:</strong> ${project.timeline} days</p>
                 <p><strong>Location:</strong> ${project.location}</p>
@@ -454,9 +451,13 @@ class Dashboard {
         return [...workers].sort((a, b) => {
             switch (sortBy) {
                 case 'experience':
-                    return b.experience - a.experience;
+                    return (b.experience || 0) - (a.experience || 0);
                 case 'rating':
-                    return (b.rating || 0) - (a.rating || 0);
+                    const aReviews = this.reviews.filter(review => review.workerId === a.id);
+                    const bReviews = this.reviews.filter(review => review.workerId === b.id);
+                    const aRating = aReviews.length > 0 ? aReviews.reduce((sum, review) => sum + review.rating, 0) / aReviews.length : 0;
+                    const bRating = bReviews.length > 0 ? bReviews.reduce((sum, review) => sum + review.rating, 0) / bReviews.length : 0;
+                    return bRating - aRating;
                 default:
                     return 0;
             }
@@ -471,8 +472,8 @@ class Dashboard {
 
         if (workers.length === 0) {
             container.innerHTML = `
-                <div class="card" style="text-align: center; padding: 3rem;">
-                    <i class="fa-solid fa-users-slash fa-3x" style="color: #7360DF; margin-bottom: 1rem;"></i>
+                <div class="empty-state">
+                    <i class="fa-solid fa-users-slash fa-3x"></i>
                     <h3>No workers found</h3>
                     <p>Try adjusting your search criteria or check back later</p>
                 </div>
@@ -508,6 +509,11 @@ class Dashboard {
         return professionMap[profession] || profession;
     }
 
+    formatWorkerTypes(workerTypes) {
+        if (!workerTypes || workerTypes.length === 0) return 'Not specified';
+        return workerTypes.map(type => this.formatProfession(type)).join(', ');
+    }
+
     createWorkerCard(worker) {
         const card = document.createElement('div');
         card.className = 'card';
@@ -524,10 +530,10 @@ class Dashboard {
                 <p>${this.formatProfession(worker.profession)}</p> 
             </div>
             <div class="details">
-                <p><strong>Experience:</strong> ${worker.experience} years</p>
+                <p><strong>Experience:</strong> ${worker.experience || 0} years</p>
                 <p><strong>Location:</strong> ${worker.location}</p>
                 <p><strong>Rating:</strong> ${averageRating} ${typeof averageRating === 'string' ? '' : '⭐'}</p>
-                <p><strong>Status:</strong> <span class="status-badge ${worker.status || 'inactive'}">${worker.status || 'Inactive'}</span></p>
+                <p><strong>Status:</strong> <span class="status-badge ${worker.status || 'inactive'}">${worker.status ? worker.status.charAt(0).toUpperCase() + worker.status.slice(1) : 'Inactive'}</span></p>
                 <p><strong>Contact:</strong> ${worker.mobileNumber || 'N/A'}</p>
                 
                 <div class="worker-actions">
@@ -581,7 +587,8 @@ class Dashboard {
     addProject() {
         const title = document.getElementById('projectTitle').value;
         const description = document.getElementById('projectDescription').value;
-        const workType = document.getElementById('projectType').value;
+        const workerTypes = Array.from(document.getElementById('projectWorkers').selectedOptions)
+                                .map(option => option.value);
         const budget = document.getElementById('projectBudget').value;
         const timeline = document.getElementById('projectTimeline').value;
         const location = document.getElementById('projectLocation').value;
@@ -593,7 +600,7 @@ class Dashboard {
         const preferredContact = document.getElementById('preferredContact').value;
 
         // Validation
-        if (!title || !description || !workType || !budget || !timeline || !location || !contactName || !contactPhone) {
+        if (!title || !description || workerTypes.length === 0 || !budget || !timeline || !location || !contactName || !contactPhone) {
             alert('Please fill all required fields');
             return;
         }
@@ -602,7 +609,7 @@ class Dashboard {
             id: Date.now().toString(),
             title,
             description,
-            workType,
+            workerTypes,
             budget: parseInt(budget),
             timeline: parseInt(timeline),
             location,
@@ -661,8 +668,8 @@ class Dashboard {
 
         if (projects.length === 0) {
             container.innerHTML = `
-                <div class="card" style="text-align: center; padding: 3rem;">
-                    <i class="fa-solid fa-clipboard-list fa-3x" style="color: #7360DF; margin-bottom: 1rem;"></i>
+                <div class="empty-state">
+                    <i class="fa-solid fa-clipboard-list fa-3x"></i>
                     <h3>No projects available</h3>
                     <p>Check back later for new projects</p>
                 </div>
@@ -695,7 +702,7 @@ class Dashboard {
             </div>
             
             <div class="project-details">
-                <p><strong><i class="fa-solid fa-briefcase"></i> Work Type:</strong> ${this.formatProfession(project.workType)}</p>
+                <p><strong><i class="fa-solid fa-briefcase"></i> Worker Types Needed:</strong> ${this.formatWorkerTypes(project.workerTypes)}</p>
                 <p><strong><i class="fa-solid fa-indian-rupee-sign"></i> Budget:</strong> ₹${project.budget.toLocaleString()}</p>
                 <p><strong><i class="fa-solid fa-calendar-days"></i> Timeline:</strong> ${project.timeline} days</p>
                 <p><strong><i class="fa-solid fa-location-dot"></i> Location:</strong> ${project.location}</p>
