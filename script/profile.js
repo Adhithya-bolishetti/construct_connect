@@ -1,37 +1,36 @@
 function insertForm() {
     const workerForm = document.getElementById("worker");
-    const contractorForm = document.getElementById("contractor");
     const customerForm = document.getElementById("customer");
     const workerRadio = document.getElementById("workerRadio");
-    const contractorRadio = document.getElementById("contractorRadio");
     const customerRadio = document.getElementById("customerRadio");
     
     if (workerRadio.checked) {
-        contractorForm.style.display = "none";
         customerForm.style.display = "none";
         workerForm.style.display = "block";
-    } else if (contractorRadio.checked) {
-        workerForm.style.display = "none";
-        customerForm.style.display = "none";
-        contractorForm.style.display = "block";
     } else if (customerRadio.checked) {
         workerForm.style.display = "none";
-        contractorForm.style.display = "none";
         customerForm.style.display = "block";
     }
 }
 
-function dashboard() {
+function submitProfile() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    const users = JSON.parse(localStorage.getItem('constructConnectUsers'));
+    const users = JSON.parse(localStorage.getItem('constructConnectUsers')) || [];
     
     const firstName = document.getElementById("fname").value;
     const lastName = document.getElementById("lname").value;
     const mobileNumber = document.getElementById("mobilenumber").value;
     const accountType = document.querySelector('input[name="actype"]:checked')?.value;
 
+    // Basic validation
     if (!firstName || !lastName || !mobileNumber || !accountType) {
         alert("Please fill all required fields");
+        return;
+    }
+
+    // Mobile number validation
+    if (mobileNumber.length !== 10 || !/^\d+$/.test(mobileNumber)) {
+        alert("Please enter a valid 10-digit mobile number");
         return;
     }
 
@@ -47,49 +46,25 @@ function dashboard() {
     if (accountType === 'worker') {
         const profession = document.getElementById("profession").value;
         const experience = document.getElementById("experience").value;
-        const location = document.getElementById("location").value;
+        const location = document.getElementById("workerLocation").value;
 
-        if (!profession || !experience || !location) {
-            alert("Please fill all worker details");
-            return;
-        }
-
+        // Worker validation - make fields optional
         userData = {
             ...userData,
-            profession,
-            experience: parseInt(experience),
-            location
-        };
-    } else if (accountType === 'contractor') {
-        const company = document.getElementById("company").value;
-        const location = document.getElementById("location").value;
-
-        if (!company || !location) {
-            alert("Please fill all contractor details");
-            return;
-        }
-
-        userData = {
-            ...userData,
-            company,
-            location
+            profession: profession || 'Not specified',
+            experience: experience ? parseInt(experience) : 0,
+            location: location || 'Not specified',
+            status: 'inactive' // Default status for workers
         };
     } else if (accountType === 'customer') {
         const company = document.getElementById("company").value;
-        const location = document.getElementById("location").value;
-        const workTypes = Array.from(document.getElementById("workTypes").selectedOptions)
-                               .map(option => option.value);
+        const location = document.getElementById("customerLocation").value;
 
-        if (!location || workTypes.length === 0) {
-            alert("Please fill location and select at least one work type");
-            return;
-        }
-
+        // Customer validation - make location optional
         userData = {
             ...userData,
             company: company || 'Individual Customer',
-            location,
-            workTypes
+            location: location || 'Not specified'
         };
     }
 
@@ -106,9 +81,8 @@ function dashboard() {
 }
 
 function clearForm() {
-    document.querySelector('form').reset();
+    document.getElementById('profileForm').reset();
     document.getElementById("worker").style.display = "none";
-    document.getElementById("contractor").style.display = "none";
     document.getElementById("customer").style.display = "none";
 }
 
@@ -125,6 +99,16 @@ document.addEventListener('DOMContentLoaded', function() {
             if (radio) {
                 radio.checked = true;
                 insertForm();
+                
+                // Load existing data for the specific account type
+                if (currentUser.accountType === 'worker') {
+                    document.getElementById("profession").value = currentUser.profession || '';
+                    document.getElementById("experience").value = currentUser.experience || '';
+                    document.getElementById("workerLocation").value = currentUser.location || '';
+                } else if (currentUser.accountType === 'customer') {
+                    document.getElementById("company").value = currentUser.company || '';
+                    document.getElementById("customerLocation").value = currentUser.location || '';
+                }
             }
         }
     }
@@ -132,5 +116,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Make functions global
 window.insertForm = insertForm;
-window.dashboard = dashboard;
+window.submitProfile = submitProfile;
 window.clearForm = clearForm;
