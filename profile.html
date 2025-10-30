@@ -15,11 +15,11 @@
   <main>
     <div class="gardient">
       <div class="card">
-        <form method="dialog">
+        <form method="dialog" id="profileForm">
             <h1>Enter your details</h1>
             <div class="profile">
                 <img src="./assets/workerProfile.png" alt="profile.pic">
-                </div>
+            </div>
             <div class="inp fname">
               <label><i class="fa-solid fa-font" style="padding-right:1rem;"></i>First Name:</label>
               <input type="text" name="fname" id="fname" placeholder="Enter your first name" required/>
@@ -29,7 +29,7 @@
               <input type="text" name="lname" id="lname" placeholder="Enter your last name" required />
           </div>
             <div class="inp email">
-              <label><i class="fa-solid fa-1" style="padding-right:1rem;"></i>Mobile Number:</label>
+              <label><i class="fa-solid fa-mobile" style="padding-right:1rem;"></i>Mobile Number:</label>
               <input type="tel" name="mobilenumber" id="mobilenumber" placeholder="Enter your Mobile number" required />
           </div>
 
@@ -38,8 +38,6 @@
             <div class="actype">
               <input type="radio" name="actype" id="workerRadio" value="worker" onclick="insertForm()" required />
               <label for="workerRadio"><i style="padding-right:1rem;" class="fa-solid fa-user-ninja"></i>Worker</label>
-              <input type="radio" name="actype" id="contractorRadio" value="contractor" onclick="insertForm()" required />
-              <label for="contractorRadio"><i style="padding-right:1rem;" class="fa-solid fa-building-user"></i>Contractor</label>
               <input type="radio" name="actype" id="customerRadio" value="customer" onclick="insertForm()" required />
               <label for="customerRadio"><i style="padding-right:1rem;" class="fa-solid fa-user-tie"></i>Customer</label>
             </div>
@@ -48,7 +46,7 @@
             <div id="worker" style="display:none;" >
               <div class="inp profession">
                 <label><i class="fa-solid fa-briefcase" style="padding-right:1rem;"></i>Profession :</label>
-                <select name="profession" id="profession" required>
+                <select name="profession" id="profession">
                   <option value="">Select your profession</option>
                   <option value="architect">Architect</option>
                   <option value="civil-engineer">Civil Engineer</option>
@@ -69,69 +67,33 @@
               </div>
               <div class="inp experience">
                 <label><i class="fa-solid fa-calendar" style="padding-right:1rem;"></i>Experience :</label>
-                <input type="number" name="experience" id="experience" placeholder="Enter your experience in years" required />
+                <input type="number" name="experience" id="experience" placeholder="Enter your experience in years" />
               </div>
               <div class="inp location">
                 <label><i class="fa-solid fa-map-marker" style="padding-right:1rem;"></i>Location :</label>
-                <input type="text" name="location" id="location" placeholder="Enter your location" required />
-              </div>
-            </div>
-            
-            <!-- Contractor form -->
-            <div id="contractor" style="display:none;">
-              <div class="inp company">
-                <label><i class="fa-solid fa-building" style="padding-right:1rem;"></i>Company :</label>
-                <input type="text" name="company" id="company" placeholder="Enter your company name" required />
-              </div>
-              <div class="inp location">
-                <label><i class="fa-solid fa-map-marker" style="padding-right:1rem;"></i>Location :</label>
-                <input type="text" name="location" id="location" placeholder="Enter your location" required />
+                <input type="text" name="workerLocation" id="workerLocation" placeholder="Enter your location" />
               </div>
             </div>
             
             <!-- Customer Form -->
             <div id="customer" style="display:none;">
               <div class="inp company">
-                <label><i class="fa-solid fa-building" style="padding-right:1rem;"></i>Company :</label>
-                <input type="text" name="company" id="company" placeholder="Enter your company name (optional)" />
+                <label><i class="fa-solid fa-building" style="padding-right:1rem;"></i>Company (optional):</label>
+                <input type="text" name="company" id="company" placeholder="Enter your company name" />
               </div>
               <div class="inp location">
                 <label><i class="fa-solid fa-map-marker" style="padding-right:1rem;"></i>Location :</label>
-                <input type="text" name="location" id="location" placeholder="Enter your location" required />
-              </div>
-              <div class="inp work-types">
-                <label><i class="fa-solid fa-tools" style="padding-right:1rem;"></i>Types of Work Needed:</label>
-                <select name="workTypes" id="workTypes" multiple required style="height: 150px;">
-                  <option value="architect">Architect</option>
-                  <option value="civil-engineer">Civil Engineer</option>
-                  <option value="structural-engineer">Structural Engineer</option>
-                  <option value="site-engineer">Site Engineer</option>
-                  <option value="carpenter">Carpenter</option>
-                  <option value="electrician">Electrician</option>
-                  <option value="plumber">Plumber</option>
-                  <option value="painter">Painter</option>
-                  <option value="mason">Mason</option>
-                  <option value="welder">Welder</option>
-                  <option value="fabricator">Fabricator</option>
-                  <option value="fitter">Fitter</option>
-                  <option value="mechanic">Mechanic</option>
-                  <option value="technician">Technician</option>
-                  <option value="other">Other</option>
-                </select>
-                <small style="color: #ccc; font-size: 0.8rem; display: block; margin-top: 0.5rem;">
-                  Hold Ctrl (or Cmd on Mac) to select multiple types
-                </small>
+                <input type="text" name="customerLocation" id="customerLocation" placeholder="Enter your location" />
               </div>
             </div>
             
             <div class="btns">
-              <button type="button" class="btn" onclick="dashboard()">Submit</button> 
+              <button type="button" class="btn" onclick="submitProfile()">Submit</button> 
               <button type="button" class="btn" onclick="clearForm()">Reset</button> 
             </div>
         </form>
         </div>
       </div>
-      
     </div>
   </main>
   <footer class="row">
