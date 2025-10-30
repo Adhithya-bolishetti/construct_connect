@@ -177,98 +177,6 @@ section{
     grid-area: section;
     min-height: 60vh;
 }
-section
-{
-    /* background-color: #A1EEBD; */
-    /* display: flex;
-    justify-content: space-around; */
-}
-section form input[type="text"],select
-{
-    margin: 0.2rem;
-    padding: 0.5rem;
-    border-radius: 10px;
-    border: none;
-    background-color: #ffffff;
-    color: #000000;
-}
-section form
-{
-    padding: 1rem 5rem 1rem 5rem;
-    justify-content: space-around;
-}
-section form input[type="button"]
-{
-    margin: 0.5rem;
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    border-radius: 10px;
-    border: none;
-    background-color: #aba1e0;
-    color: #ffffff;
-    font-size:large;
-}
-section form input[type="button"]:hover
-{
-    background-color: #F2AFEF;
-    color: #000000;
-}
-
-/* section profile card */
-section .card
-{
-    margin: 1rem 0.3rem 1rem 0.3rem;
-    padding: 2rem;
-    background: linear-gradient(rgb(0,0,0,0.5),rgb(0,0,0,0.5));
-    border-radius: 1rem;
-    box-shadow: 0px 0px 10px 0px rgb(256,256,256,0.5);
-    display: grid;
-    grid-template-areas: 
-    'dp name name name'
-    'details details details details';
-}
-section .card img{
-    grid-area: dp;
-    justify-self: center;
-    width: 8rem;
-    height: 8rem;
-    border-radius: 50%;
-    border: 0.2rem solid #ffffff;
-    padding: 0.2 rem;
-}
-section .card #name{
-    grid-area: name;
-    grid-column-start:2 ;
-}
-section .card #details
-{
-    grid-area: details;
-    padding: 1rem;
-}
-
-/* Footer */
-footer{
-    grid-area: footer;
-    background-color: #000;
-    height:5rem;
-    display: flex;
-    justify-content: space-around;
-    align-items:center ;
-    color:#fff;
-    padding: 0 1rem;
-} 
-footer ul{    
-    display: flex;
-    list-style: none;
-    width: 30%;
-    justify-content: space-around;
-}
-footer ul a{
-    color:#fff;
-    text-decoration: none; 
-}
-footer ul a:hover{    
-    color:rgb(0, 255, 255);
-}
 
 /* Section Management */
 .section-hidden {
@@ -491,11 +399,6 @@ footer ul a:hover{
     font-weight: bold;
 }
 
-.form-group label::after {
-    content: " *";
-    color: #F2AFEF;
-}
-
 .form-group input,
 .form-group select,
 .form-group textarea {
@@ -677,24 +580,6 @@ footer ul a:hover{
 .form-group textarea:focus {
     outline: 2px solid #F2AFEF;
     background-color: #444;
-}
-
-.form-group select[required]:invalid,
-.form-group input[required]:invalid,
-.form-group textarea[required]:invalid {
-    border-left: 3px solid #F2AFEF;
-}
-
-.form-group select[required]:valid,
-.form-group input[required]:valid,
-.form-group textarea[required]:valid {
-    border-left: 3px solid #A1EEBD;
-}
-
-/* Improve multiple select visibility */
-.form-group select[multiple] option:checked {
-    background: linear-gradient(#7360DF, #F2AFEF);
-    color: white;
 }
 
 /* Modal header styling */
@@ -1023,6 +908,65 @@ footer ul a:hover{
     color: #fff;
 }
 
+/* Worker card styles */
+.card {
+    margin: 1rem 0.3rem 1rem 0.3rem;
+    padding: 2rem;
+    background: linear-gradient(rgb(0,0,0,0.5),rgb(0,0,0,0.5));
+    border-radius: 1rem;
+    box-shadow: 0px 0px 10px 0px rgb(256,256,256,0.5);
+    display: grid;
+    grid-template-areas: 
+    'dp name name name'
+    'details details details details';
+}
+
+.card img{
+    grid-area: dp;
+    justify-self: center;
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    border: 0.2rem solid #ffffff;
+    padding: 0.2 rem;
+}
+
+.card .name{
+    grid-area: name;
+    grid-column-start:2 ;
+}
+
+.card .details
+{
+    grid-area: details;
+    padding: 1rem;
+}
+
+/* Footer */
+footer{
+    grid-area: footer;
+    background-color: #000;
+    height:5rem;
+    display: flex;
+    justify-content: space-around;
+    align-items:center ;
+    color:#fff;
+    padding: 0 1rem;
+} 
+footer ul{    
+    display: flex;
+    list-style: none;
+    width: 30%;
+    justify-content: space-around;
+}
+footer ul a{
+    color:#fff;
+    text-decoration: none; 
+}
+footer ul a:hover{    
+    color:rgb(0, 255, 255);
+}
+
 /* Loading states */
 .contact-btn:active, .whatsapp-btn:active, .email-btn:active, .review-btn:active {
     transform: translateY(0);
@@ -1105,6 +1049,17 @@ footer ul a:hover{
     
     #filters form {
         flex-direction: column;
+    }
+    
+    .card {
+        grid-template-areas: 
+        'dp name'
+        'details details';
+        text-align: center;
+    }
+    
+    .card .name {
+        grid-column-start: 2;
     }
 }
 
