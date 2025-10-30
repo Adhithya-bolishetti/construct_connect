@@ -11,14 +11,20 @@ function goBack() {
 function signup() {
     const firstName = document.getElementById("fname").value;
     const lastName = document.getElementById("lname").value;
-    const email = document.getElementById("email").value;
+    const mobile = document.getElementById("mobile").value;
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("cpassword").value;
     const accountType = document.querySelector('input[name="actype"]:checked')?.value;
 
     // Validation
-    if (!firstName || !lastName || !password || !confirmPassword || !accountType) {
+    if (!firstName || !lastName || !mobile || !password || !confirmPassword || !accountType) {
         alert("Please fill all required fields");
+        return;
+    }
+
+    // Mobile number validation
+    if (mobile.length !== 10 || !/^\d+$/.test(mobile)) {
+        alert("Please enter a valid 10-digit mobile number");
         return;
     }
 
@@ -34,10 +40,10 @@ function signup() {
 
     // Check if user already exists
     const users = JSON.parse(localStorage.getItem('constructConnectUsers')) || [];
-    const existingUser = users.find(u => u.email === email);
+    const existingUser = users.find(u => u.mobileNumber === mobile);
     
     if (existingUser) {
-        alert("User with this email already exists");
+        alert("User with this mobile number already exists");
         return;
     }
 
@@ -46,7 +52,7 @@ function signup() {
         id: Date.now().toString(),
         firstName,
         lastName,
-        email,
+        mobileNumber: mobile,
         password,
         accountType,
         profileComplete: false,
