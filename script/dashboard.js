@@ -24,14 +24,19 @@ class Dashboard {
     }
 
     loadUserProfile() {
-        document.getElementById('userName').textContent = 
-            `${this.currentUser.firstName} ${this.currentUser.lastName}`;
-        
+        const userNameElement = document.getElementById('userName');
         const userTypeElement = document.getElementById('userType');
-        if (this.currentUser.accountType === 'customer') {
-            userTypeElement.textContent = this.currentUser.company || 'Customer';
-        } else if (this.currentUser.accountType === 'worker') {
-            userTypeElement.textContent = this.formatProfession(this.currentUser.profession) || 'Worker';
+        
+        if (userNameElement) {
+            userNameElement.textContent = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+        }
+        
+        if (userTypeElement) {
+            if (this.currentUser.accountType === 'customer') {
+                userTypeElement.textContent = this.currentUser.company || 'Customer';
+            } else if (this.currentUser.accountType === 'worker') {
+                userTypeElement.textContent = this.formatProfession(this.currentUser.profession) || 'Worker';
+            }
         }
     }
 
@@ -47,43 +52,64 @@ class Dashboard {
         });
 
         // Logout
-        document.getElementById('logoutBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('currentUser');
-            window.location.href = "./index.html";
-        });
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('currentUser');
+                window.location.href = "./index.html";
+            });
+        }
 
         // Search
-        document.querySelector('#searchbar button').addEventListener('click', () => {
-            this.handleSearch();
-        });
-
-        document.getElementById('searchWorker').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
+        const searchButton = document.querySelector('#searchbar button');
+        if (searchButton) {
+            searchButton.addEventListener('click', () => {
                 this.handleSearch();
-            }
-        });
+            });
+        }
+
+        const searchInput = document.getElementById('searchWorker');
+        if (searchInput) {
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.handleSearch();
+                }
+            });
+        }
 
         // Filters
-        document.getElementById('applyFilters').addEventListener('click', () => {
-            this.applyFilters();
-        });
+        const applyFiltersBtn = document.getElementById('applyFilters');
+        if (applyFiltersBtn) {
+            applyFiltersBtn.addEventListener('click', () => {
+                this.applyFilters();
+            });
+        }
 
         // Edit Profile
-        document.getElementById('editProfileBtn').addEventListener('click', () => {
-            this.openEditProfileModal();
-        });
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        if (editProfileBtn) {
+            editProfileBtn.addEventListener('click', () => {
+                this.openEditProfileModal();
+            });
+        }
 
         // Status Toggle
-        document.getElementById('statusToggleBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            this.toggleWorkerStatus();
-        });
+        const statusToggleBtn = document.getElementById('statusToggleBtn');
+        if (statusToggleBtn) {
+            statusToggleBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.toggleWorkerStatus();
+            });
+        }
 
         // Add Project (from profile)
-        document.getElementById('addProjectBtn').addEventListener('click', () => {
-            this.openProjectModal();
-        });
+        const addProjectBtn = document.getElementById('addProjectBtn');
+        if (addProjectBtn) {
+            addProjectBtn.addEventListener('click', () => {
+                this.openProjectModal();
+            });
+        }
     }
 
     setupModals() {
@@ -91,51 +117,70 @@ class Dashboard {
         const editProfileModal = document.getElementById('editProfileModal');
         const editProfileForm = document.getElementById('editProfileForm');
 
-        document.querySelector('#editProfileModal .close').addEventListener('click', () => {
-            editProfileModal.style.display = 'none';
-        });
+        if (editProfileModal && editProfileForm) {
+            const editProfileClose = editProfileModal.querySelector('.close');
+            if (editProfileClose) {
+                editProfileClose.addEventListener('click', () => {
+                    editProfileModal.style.display = 'none';
+                });
+            }
 
-        editProfileForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.updateProfile();
-        });
+            editProfileForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.updateProfile();
+            });
+        }
 
         // Project Modal
         const projectModal = document.getElementById('projectModal');
         const projectForm = document.getElementById('projectForm');
 
-        document.querySelector('#projectModal .close').addEventListener('click', () => {
-            projectModal.style.display = 'none';
-        });
+        if (projectModal && projectForm) {
+            const projectClose = projectModal.querySelector('.close');
+            if (projectClose) {
+                projectClose.addEventListener('click', () => {
+                    projectModal.style.display = 'none';
+                });
+            }
 
-        projectForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.addProject();
-        });
+            projectForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.addProject();
+            });
+        }
 
         // Review Modal
         const reviewModal = document.getElementById('reviewModal');
         const reviewForm = document.getElementById('reviewForm');
 
-        document.querySelector('#reviewModal .close').addEventListener('click', () => {
-            reviewModal.style.display = 'none';
-        });
+        if (reviewModal && reviewForm) {
+            const reviewClose = reviewModal.querySelector('.close');
+            if (reviewClose) {
+                reviewClose.addEventListener('click', () => {
+                    reviewModal.style.display = 'none';
+                });
+            }
 
-        // Star rating
-        document.querySelectorAll('.star').forEach(star => {
-            star.addEventListener('click', () => {
-                const rating = star.getAttribute('data-rating');
-                this.setRating(rating);
+            // Star rating
+            document.querySelectorAll('.star').forEach(star => {
+                star.addEventListener('click', () => {
+                    const rating = star.getAttribute('data-rating');
+                    this.setRating(rating);
+                });
             });
-        });
 
-        reviewForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.submitReview();
-        });
+            reviewForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.submitReview();
+            });
+        }
 
         // Close modal when clicking outside
         window.addEventListener('click', (e) => {
+            const editProfileModal = document.getElementById('editProfileModal');
+            const projectModal = document.getElementById('projectModal');
+            const reviewModal = document.getElementById('reviewModal');
+
             if (e.target === editProfileModal) {
                 editProfileModal.style.display = 'none';
             }
@@ -186,32 +231,46 @@ class Dashboard {
     // Profile Section Methods
     loadProfileData() {
         // Set profile information
-        document.getElementById('profileName').textContent = 
-            `${this.currentUser.firstName} ${this.currentUser.lastName}`;
-        document.getElementById('profileFirstName').textContent = this.currentUser.firstName || '-';
-        document.getElementById('profileLastName').textContent = this.currentUser.lastName || '-';
-        document.getElementById('profileEmail').textContent = this.currentUser.email || '-';
-        document.getElementById('profileMobile').textContent = this.currentUser.mobileNumber || '-';
-        document.getElementById('profileAccountType').textContent = this.currentUser.accountType || '-';
-        document.getElementById('profileProfession').textContent = this.currentUser.profession ? this.formatProfession(this.currentUser.profession) : '-';
-        document.getElementById('profileExperience').textContent = this.currentUser.experience ? `${this.currentUser.experience} years` : '-';
-        document.getElementById('profileCompany').textContent = this.currentUser.company || '-';
-        document.getElementById('profileLocation').textContent = this.currentUser.location || '-';
-        document.getElementById('profileLocationDetail').textContent = this.currentUser.location || '-';
+        const profileElements = {
+            'profileName': `${this.currentUser.firstName} ${this.currentUser.lastName}`,
+            'profileFirstName': this.currentUser.firstName || '-',
+            'profileLastName': this.currentUser.lastName || '-',
+            'profileEmail': this.currentUser.email || '-',
+            'profileMobile': this.currentUser.mobileNumber || '-',
+            'profileAccountType': this.currentUser.accountType || '-',
+            'profileProfession': this.currentUser.profession ? this.formatProfession(this.currentUser.profession) : '-',
+            'profileExperience': this.currentUser.experience ? `${this.currentUser.experience} years` : '-',
+            'profileCompany': this.currentUser.company || '-',
+            'profileLocation': this.currentUser.location || '-',
+            'profileLocationDetail': this.currentUser.location || '-'
+        };
+
+        Object.keys(profileElements).forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = profileElements[id];
+            }
+        });
         
         // Show/hide sections based on account type
+        const workerStatusSection = document.getElementById('workerStatusSection');
+        const customerProjectsSection = document.getElementById('customerProjectsSection');
+        
         if (this.currentUser.accountType === 'worker') {
-            document.getElementById('workerStatusSection').style.display = 'block';
-            document.getElementById('customerProjectsSection').style.display = 'none';
+            if (workerStatusSection) workerStatusSection.style.display = 'block';
+            if (customerProjectsSection) customerProjectsSection.style.display = 'none';
             this.updateStatusButton();
         } else if (this.currentUser.accountType === 'customer') {
-            document.getElementById('workerStatusSection').style.display = 'none';
-            document.getElementById('customerProjectsSection').style.display = 'block';
+            if (workerStatusSection) workerStatusSection.style.display = 'none';
+            if (customerProjectsSection) customerProjectsSection.style.display = 'block';
             this.loadUserProjects();
         }
     }
 
     openEditProfileModal() {
+        const modal = document.getElementById('editProfileModal');
+        if (!modal) return;
+
         // Pre-fill form with current user data
         document.getElementById('editFirstName').value = this.currentUser.firstName || '';
         document.getElementById('editLastName').value = this.currentUser.lastName || '';
@@ -220,18 +279,21 @@ class Dashboard {
         document.getElementById('editLocation').value = this.currentUser.location || '';
         
         // Show/hide fields based on account type
+        const workerFields = document.getElementById('editWorkerFields');
+        const customerFields = document.getElementById('editCustomerFields');
+        
         if (this.currentUser.accountType === 'worker') {
-            document.getElementById('editWorkerFields').style.display = 'block';
-            document.getElementById('editCustomerFields').style.display = 'none';
+            if (workerFields) workerFields.style.display = 'block';
+            if (customerFields) customerFields.style.display = 'none';
             document.getElementById('editProfession').value = this.currentUser.profession || '';
             document.getElementById('editExperience').value = this.currentUser.experience || '';
         } else if (this.currentUser.accountType === 'customer') {
-            document.getElementById('editWorkerFields').style.display = 'none';
-            document.getElementById('editCustomerFields').style.display = 'block';
+            if (workerFields) workerFields.style.display = 'none';
+            if (customerFields) customerFields.style.display = 'block';
             document.getElementById('editCompany').value = this.currentUser.company || '';
         }
         
-        document.getElementById('editProfileModal').style.display = 'block';
+        modal.style.display = 'block';
     }
 
     updateProfile() {
@@ -239,6 +301,11 @@ class Dashboard {
         const lastName = document.getElementById('editLastName').value;
         const mobile = document.getElementById('editMobile').value;
         const location = document.getElementById('editLocation').value;
+        
+        if (!firstName || !lastName || !mobile) {
+            alert('Please fill all required fields');
+            return;
+        }
         
         // Update current user
         this.currentUser.firstName = firstName;
@@ -291,6 +358,8 @@ class Dashboard {
     updateStatusButton() {
         const statusBtn = document.getElementById('statusToggleBtn');
         const statusText = document.getElementById('statusText');
+        
+        if (!statusBtn || !statusText) return;
         
         if (this.currentUser.status === 'active') {
             statusBtn.classList.remove('inactive');
@@ -355,10 +424,13 @@ class Dashboard {
         `;
         
         // Add delete event listener
-        card.querySelector('.delete-btn').addEventListener('click', (e) => {
-            const projectId = e.target.closest('.delete-btn').getAttribute('data-project-id');
-            this.deleteProject(projectId);
-        });
+        const deleteBtn = card.querySelector('.delete-btn');
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', (e) => {
+                const projectId = e.currentTarget.getAttribute('data-project-id');
+                this.deleteProject(projectId);
+            });
+        }
         
         return card;
     }
@@ -373,7 +445,7 @@ class Dashboard {
             
             // Reload projects
             this.loadUserProjects();
-            this.loadProjects(); // Reload main projects section if active
+            this.loadProjects();
             
             alert('Project deleted successfully!');
         }
@@ -409,8 +481,8 @@ class Dashboard {
             filtered = this.workers.filter(worker =>
                 worker.firstName.toLowerCase().includes(searchTerm) ||
                 worker.lastName.toLowerCase().includes(searchTerm) ||
-                worker.profession.toLowerCase().includes(searchTerm) ||
-                worker.location.toLowerCase().includes(searchTerm)
+                (worker.profession && worker.profession.toLowerCase().includes(searchTerm)) ||
+                (worker.location && worker.location.toLowerCase().includes(searchTerm))
             );
         }
         
@@ -423,7 +495,7 @@ class Dashboard {
         // Apply location filter
         if (filters.location) {
             filtered = filtered.filter(worker =>
-                worker.location.toLowerCase().includes(filters.location)
+                worker.location && worker.location.toLowerCase().includes(filters.location)
             );
         }
 
@@ -533,16 +605,16 @@ class Dashboard {
             </div>
             <div class="details">
                 <p><strong>Experience:</strong> ${worker.experience || 0} years</p>
-                <p><strong>Location:</strong> ${worker.location}</p>
+                <p><strong>Location:</strong> ${worker.location || 'Not specified'}</p>
                 <p><strong>Rating:</strong> ${averageRating} ${typeof averageRating === 'string' ? '' : '⭐'}</p>
                 <p><strong>Status:</strong> <span class="status-badge ${worker.status || 'inactive'}">${worker.status ? worker.status.charAt(0).toUpperCase() + worker.status.slice(1) : 'Inactive'}</span></p>
                 <p><strong>Contact:</strong> ${worker.mobileNumber || 'N/A'}</p>
                 
                 <div class="worker-actions">
-                    <button class="contact-btn" onclick="dashboard.contactWorker('${worker.id}')">
+                    <button class="contact-btn" data-worker-id="${worker.id}">
                         <i class="fa-solid fa-phone"></i> Contact
                     </button>
-                    <button class="review-btn" onclick="dashboard.openReviewModal('${worker.id}')">
+                    <button class="review-btn" data-worker-id="${worker.id}">
                         <i class="fa-solid fa-star"></i> Add Review
                     </button>
                 </div>
@@ -565,6 +637,24 @@ class Dashboard {
             </div>
         `;
         
+        // Add event listeners to buttons
+        const contactBtn = card.querySelector('.contact-btn');
+        const reviewBtn = card.querySelector('.review-btn');
+        
+        if (contactBtn) {
+            contactBtn.addEventListener('click', (e) => {
+                const workerId = e.currentTarget.getAttribute('data-worker-id');
+                this.contactWorker(workerId);
+            });
+        }
+        
+        if (reviewBtn) {
+            reviewBtn.addEventListener('click', (e) => {
+                const workerId = e.currentTarget.getAttribute('data-worker-id');
+                this.openReviewModal(workerId);
+            });
+        }
+        
         return card;
     }
 
@@ -577,14 +667,16 @@ class Dashboard {
 
     // Projects Section Methods
     openProjectModal() {
+        const modal = document.getElementById('projectModal');
+        if (!modal) return;
+
         // Pre-fill contact details with user info
         document.getElementById('contactName').value = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
         document.getElementById('contactPhone').value = this.currentUser.mobileNumber || '';
         document.getElementById('contactEmail').value = this.currentUser.email || '';
         document.getElementById('projectLocation').value = this.currentUser.location || '';
         
-        document.getElementById('projectModal').style.display = 'block';
-        document.getElementById('projectForm').reset();
+        modal.style.display = 'block';
     }
 
     addProject() {
@@ -629,24 +721,19 @@ class Dashboard {
             createdAt: new Date().toISOString()
         };
 
-        console.log('Adding project:', project);
-
         // Update projects array and save to localStorage
         this.projects.push(project);
         localStorage.setItem('constructConnectProjects', JSON.stringify(this.projects));
 
-        console.log('Projects after adding:', this.projects);
-
         // Close modal and refresh projects display
         document.getElementById('projectModal').style.display = 'none';
         
-        // Always reload the projects data
+        // Refresh all project displays
         this.refreshAllProjectDisplays();
         
         alert('Project posted successfully!');
     }
 
-    // NEW METHOD: Refresh all project displays
     refreshAllProjectDisplays() {
         // Refresh user projects in profile section
         this.loadUserProjects();
@@ -656,15 +743,9 @@ class Dashboard {
     }
 
     loadProjects() {
-        console.log('Loading projects...');
-        
         // Always reload from localStorage to get latest data
         const storedProjects = localStorage.getItem('constructConnectProjects');
-        console.log('Stored projects:', storedProjects);
-        
         this.projects = storedProjects ? JSON.parse(storedProjects) : [];
-        console.log('Projects found:', this.projects);
-
         this.renderProjects(this.projects);
     }
 
@@ -675,7 +756,6 @@ class Dashboard {
             return;
         }
 
-        console.log('Rendering projects:', projects);
         container.innerHTML = '';
 
         if (projects.length === 0) {
@@ -731,14 +811,14 @@ class Dashboard {
                     <p><strong><i class="fa-solid fa-comment"></i> Preferred Contact:</strong> ${contactIcon} ${contactMethod}</p>
                 </div>
                 <div class="contact-actions">
-                    <button class="contact-btn" onclick="dashboard.contactProject('${project.id}', 'phone')">
+                    <button class="contact-btn" data-project-id="${project.id}" data-contact-method="phone">
                         <i class="fa-solid fa-phone"></i> Call Now
                     </button>
-                    <button class="whatsapp-btn" onclick="dashboard.contactProject('${project.id}', 'whatsapp')">
+                    <button class="whatsapp-btn" data-project-id="${project.id}" data-contact-method="whatsapp">
                         <i class="fa-brands fa-whatsapp"></i> WhatsApp
                     </button>
                     ${project.contactDetails.email ? `
-                    <button class="email-btn" onclick="dashboard.contactProject('${project.id}', 'email')">
+                    <button class="email-btn" data-project-id="${project.id}" data-contact-method="email">
                         <i class="fa-solid fa-envelope"></i> Email
                     </button>
                     ` : ''}
@@ -750,6 +830,16 @@ class Dashboard {
                 <small><i class="fa-solid fa-eye"></i> ${Math.floor(Math.random() * 50) + 1} views</small>
             </div>
         `;
+        
+        // Add event listeners to contact buttons
+        const contactButtons = card.querySelectorAll('.contact-btn, .whatsapp-btn, .email-btn');
+        contactButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const projectId = e.currentTarget.getAttribute('data-project-id');
+                const method = e.currentTarget.getAttribute('data-contact-method');
+                this.contactProject(projectId, method);
+            });
+        });
         
         return card;
     }
@@ -783,13 +873,13 @@ class Dashboard {
         switch(method) {
             case 'phone':
                 alert(`Calling ${contact.name} at ${contact.phone}`);
-                // In a real app, you would use: window.open(`tel:${contact.phone}`);
+                // In a real app: window.open(`tel:${contact.phone}`);
                 break;
             case 'whatsapp':
                 const message = `Hi ${contact.name}, I'm interested in your project "${project.title}" on Construct Connect`;
                 const whatsappUrl = `https://wa.me/${contact.phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
                 alert(`Opening WhatsApp to contact ${contact.name}`);
-                // In a real app, you would use: window.open(whatsappUrl, '_blank');
+                // In a real app: window.open(whatsappUrl, '_blank');
                 break;
             case 'email':
                 if (contact.email) {
@@ -797,7 +887,7 @@ class Dashboard {
                     const body = `Dear ${contact.name},\n\nI am interested in your project "${project.title}" posted on Construct Connect.\n\nBest regards,\n${this.currentUser.firstName} ${this.currentUser.lastName}`;
                     const mailtoUrl = `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
                     alert(`Opening email to contact ${contact.name}`);
-                    // In a real app, you would use: window.open(mailtoUrl);
+                    // In a real app: window.open(mailtoUrl);
                 }
                 break;
         }
@@ -809,9 +899,17 @@ class Dashboard {
         if (!worker) return;
 
         this.currentWorkerForReview = worker;
-        document.getElementById('workerReviewName').textContent = 
-            `${worker.firstName} ${worker.lastName}`;
-        document.getElementById('reviewWorkerId').value = worker.id;
+        
+        const workerReviewName = document.getElementById('workerReviewName');
+        const reviewWorkerId = document.getElementById('reviewWorkerId');
+        
+        if (workerReviewName) {
+            workerReviewName.textContent = `${worker.firstName} ${worker.lastName}`;
+        }
+        
+        if (reviewWorkerId) {
+            reviewWorkerId.value = worker.id;
+        }
         
         // Reset form
         document.getElementById('reviewForm').reset();
@@ -821,7 +919,10 @@ class Dashboard {
     }
 
     setRating(rating) {
-        document.getElementById('reviewRating').value = rating;
+        const ratingInput = document.getElementById('reviewRating');
+        if (ratingInput) {
+            ratingInput.value = rating;
+        }
         
         document.querySelectorAll('.star').forEach(star => {
             const starRating = star.getAttribute('data-rating');
