@@ -2,7 +2,7 @@ class Dashboard {
     constructor() {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.workers = [];
-        this.projects = JSON.parse(localStorage.getItem('constructConnectProjects')) || [];
+        this.projects = this.loadProjectsFromStorage();
         this.reviews = JSON.parse(localStorage.getItem('constructConnectReviews')) || [];
         this.currentWorkerForReview = null;
         this.init();
@@ -19,6 +19,29 @@ class Dashboard {
         this.setupModals();
         this.loadWorkers();
         this.showSection('workers');
+    }
+
+    // FIXED: Proper project storage management
+    loadProjectsFromStorage() {
+        try {
+            const stored = localStorage.getItem('constructConnectProjects');
+            console.log('Raw stored projects:', stored);
+            const projects = stored ? JSON.parse(stored) : [];
+            console.log('Parsed projects:', projects);
+            return projects;
+        } catch (error) {
+            console.error('Error loading projects from storage:', error);
+            return [];
+        }
+    }
+
+    saveProjectsToStorage() {
+        try {
+            localStorage.setItem('constructConnectProjects', JSON.stringify(this.projects));
+            console.log('Projects saved to storage:', this.projects);
+        } catch (error) {
+            console.error('Error saving projects to storage:', error);
+        }
     }
 
     loadUserProfile() {
@@ -41,7 +64,7 @@ class Dashboard {
     setupEventListeners() {
         console.log('Setting up event listeners...');
         
-        // Navigation - FIXED: Use event delegation for better reliability
+        // Navigation
         const navLinks = document.getElementById('links');
         if (navLinks) {
             navLinks.addEventListener('click', (e) => {
@@ -457,7 +480,7 @@ class Dashboard {
             this.projects = this.projects.filter(project => project.id !== projectId);
             
             // Update localStorage
-            localStorage.setItem('constructConnectProjects', JSON.stringify(this.projects));
+            this.saveProjectsToStorage();
             
             // Reload projects
             this.loadUserProjects();
@@ -681,34 +704,51 @@ class Dashboard {
         }
     }
 
-    // Projects Section Methods - FIXED VERSION
+    // FIXED: Projects Section Methods - Complete rewrite
     openProjectModal() {
         const modal = document.getElementById('projectModal');
-        if (!modal) return;
+        if (!modal) {
+            console.error('Project modal not found');
+            return;
+        }
 
         // Pre-fill contact details with user info
-        document.getElementById('contactName').value = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
-        document.getElementById('contactPhone').value = this.currentUser.mobileNumber || '';
-        document.getElementById('contactEmail').value = this.currentUser.email || '';
-        document.getElementById('projectLocation').value = this.currentUser.location || '';
+        const contactName = document.getElementById('contactName');
+        const contactPhone = document.getElementById('contactPhone');
+        const contactEmail = document.getElementById('contactEmail');
+        const projectLocation = document.getElementById('projectLocation');
+
+        if (contactName) contactName.value = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+        if (contactPhone) contactPhone.value = this.currentUser.mobileNumber || '';
+        if (contactEmail) contactEmail.value = this.currentUser.email || '';
+        if (projectLocation) projectLocation.value = this.currentUser.location || '';
         
         modal.style.display = 'block';
+        console.log('Project modal opened');
     }
 
     addProject() {
-        const title = document.getElementById('projectTitle').value;
-        const description = document.getElementById('projectDescription').value;
-        const workerTypes = Array.from(document.getElementById('projectWorkers').selectedOptions)
+        console.log('Starting to add project...');
+        
+        // Get form values
+        const title = document.getElementById('projectTitle')?.value;
+        const description = document.getElementById('projectDescription')?.value;
+        const workerTypes = Array.from(document.getElementById('projectWorkers')?.selectedOptions || [])
                                 .map(option => option.value);
-        const budget = parseInt(document.getElementById('projectBudget').value) || 0;
-        const timeline = parseInt(document.getElementById('projectTimeline').value) || 0;
-        const location = document.getElementById('projectLocation').value || this.currentUser.location;
+        const budget = parseInt(document.getElementById('projectBudget')?.value) || 0;
+        const timeline = parseInt(document.getElementById('projectTimeline')?.value) || 0;
+        const location = document.getElementById('projectLocation')?.value || this.currentUser.location;
         
         // Contact details
-        const contactName = document.getElementById('contactName').value;
-        const contactPhone = document.getElementById('contactPhone').value;
-        const contactEmail = document.getElementById('contactEmail').value;
-        const preferredContact = document.getElementById('preferredContact').value;
+        const contactName = document.getElementById('contactName')?.value;
+        const contactPhone = document.getElementById('contactPhone')?.value;
+        const contactEmail = document.getElementById('contactEmail')?.value;
+        const preferredContact = document.getElementById('preferredContact')?.value;
+
+        console.log('Form values:', {
+            title, description, workerTypes, budget, timeline, location,
+            contactName, contactPhone, contactEmail, preferredContact
+        });
 
         // Validation
         if (!title || !description || !budget || !timeline || !contactName || !contactPhone) {
@@ -717,49 +757,44 @@ class Dashboard {
         }
 
         const project = {
-            id: 'project_' + Date.now().toString(),
-            title,
-            description,
-            workerTypes,
+            id: 'project_' + Date.now(),
+            title: title.trim(),
+            description: description.trim(),
+            workerTypes: workerTypes,
             budget: budget,
             timeline: timeline,
-            location,
+            location: location.trim(),
             customerId: this.currentUser.id,
             customerName: `${this.currentUser.firstName} ${this.currentUser.lastName}`,
-            // Contact details
             contactDetails: {
-                name: contactName,
-                phone: contactPhone,
-                email: contactEmail,
-                preferredMethod: preferredContact
+                name: contactName.trim(),
+                phone: contactPhone.trim(),
+                email: (contactEmail || '').trim(),
+                preferredMethod: preferredContact || 'any'
             },
             status: 'open',
             createdAt: new Date().toISOString()
         };
 
-        console.log('Adding project:', project);
+        console.log('New project object:', project);
 
-        // Get current projects from localStorage
-        const existingProjects = JSON.parse(localStorage.getItem('constructConnectProjects')) || [];
+        // Add to projects array
+        this.projects.push(project);
         
-        // Add new project
-        existingProjects.push(project);
+        // Save to storage
+        this.saveProjectsToStorage();
         
-        // Save back to localStorage
-        localStorage.setItem('constructConnectProjects', JSON.stringify(existingProjects));
-        
-        // Update local projects array
-        this.projects = existingProjects;
-
-        console.log('Projects after adding:', this.projects);
-
-        // Close modal and refresh projects display
+        // Close modal
         document.getElementById('projectModal').style.display = 'none';
         
-        // Refresh all project displays
+        // Reset form
+        document.getElementById('projectForm').reset();
+        
+        // Refresh displays
         this.refreshAllProjectDisplays();
         
         alert('Project posted successfully!');
+        console.log('Project added successfully');
     }
 
     refreshAllProjectDisplays() {
@@ -773,15 +808,12 @@ class Dashboard {
     }
 
     loadProjects() {
-        console.log('Loading projects...');
+        console.log('Loading projects for display...');
         
-        // Always reload from localStorage to get latest data
-        const storedProjects = localStorage.getItem('constructConnectProjects');
-        console.log('Stored projects from localStorage:', storedProjects);
+        // Reload from storage to ensure we have latest data
+        this.projects = this.loadProjectsFromStorage();
+        console.log('Projects to display:', this.projects);
         
-        this.projects = storedProjects ? JSON.parse(storedProjects) : [];
-        console.log('Projects loaded:', this.projects);
-
         this.renderProjects(this.projects);
     }
 
@@ -792,10 +824,10 @@ class Dashboard {
             return;
         }
 
-        console.log('Rendering projects:', projects);
+        console.log('Rendering projects in container');
         container.innerHTML = '';
 
-        if (projects.length === 0) {
+        if (!projects || projects.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
                     <i class="fa-solid fa-clipboard-list fa-3x"></i>
@@ -803,49 +835,64 @@ class Dashboard {
                     <p>Check back later for new projects</p>
                 </div>
             `;
+            console.log('No projects to display');
             return;
         }
 
-        // Render all projects (not just current user's)
-        projects.forEach(project => {
-            const card = this.createProjectCard(project);
-            container.appendChild(card);
+        console.log(`Rendering ${projects.length} projects`);
+        
+        projects.forEach((project, index) => {
+            console.log(`Rendering project ${index + 1}:`, project);
+            try {
+                const card = this.createProjectCard(project);
+                if (card) {
+                    container.appendChild(card);
+                    console.log(`Project ${index + 1} rendered successfully`);
+                }
+            } catch (error) {
+                console.error(`Error rendering project ${index + 1}:`, error, project);
+            }
         });
     }
 
     createProjectCard(project) {
+        if (!project) {
+            console.error('Cannot create card for undefined project');
+            return null;
+        }
+
         const card = document.createElement('div');
         card.className = 'project-card';
         
-        const contactIcon = this.getContactIcon(project.contactDetails.preferredMethod);
-        const contactMethod = this.formatContactMethod(project.contactDetails.preferredMethod);
+        const contactIcon = this.getContactIcon(project.contactDetails?.preferredMethod);
+        const contactMethod = this.formatContactMethod(project.contactDetails?.preferredMethod);
         
         card.innerHTML = `
             <div class="project-header">
                 <div class="project-title">
-                    <h3>${project.title}</h3>
-                    <p style="color: #ccc; margin: 0;">${project.description}</p>
+                    <h3>${project.title || 'Untitled Project'}</h3>
+                    <p style="color: #ccc; margin: 0;">${project.description || 'No description'}</p>
                 </div>
-                <span class="project-status status-${project.status}">
-                    ${project.status.charAt(0).toUpperCase() + project.status.slice(1)}
+                <span class="project-status status-${project.status || 'open'}">
+                    ${(project.status || 'open').charAt(0).toUpperCase() + (project.status || 'open').slice(1)}
                 </span>
             </div>
             
             <div class="project-details">
                 <p><strong><i class="fa-solid fa-briefcase"></i> Worker Types Needed:</strong> ${this.formatWorkerTypes(project.workerTypes)}</p>
-                <p><strong><i class="fa-solid fa-indian-rupee-sign"></i> Budget:</strong> ₹${project.budget.toLocaleString()}</p>
-                <p><strong><i class="fa-solid fa-calendar-days"></i> Timeline:</strong> ${project.timeline} days</p>
-                <p><strong><i class="fa-solid fa-location-dot"></i> Location:</strong> ${project.location}</p>
-                <p><strong><i class="fa-solid fa-user"></i> Posted by:</strong> ${project.customerName}</p>
+                <p><strong><i class="fa-solid fa-indian-rupee-sign"></i> Budget:</strong> ₹${(project.budget || 0).toLocaleString()}</p>
+                <p><strong><i class="fa-solid fa-calendar-days"></i> Timeline:</strong> ${project.timeline || 0} days</p>
+                <p><strong><i class="fa-solid fa-location-dot"></i> Location:</strong> ${project.location || 'Not specified'}</p>
+                <p><strong><i class="fa-solid fa-user"></i> Posted by:</strong> ${project.customerName || 'Unknown'}</p>
             </div>
             
             <!-- Contact Details Section -->
             <div class="contact-section">
                 <h4><i class="fa-solid fa-address-book"></i> Contact Details:</h4>
                 <div class="contact-details">
-                    <p><strong><i class="fa-solid fa-user"></i> Contact Person:</strong> ${project.contactDetails.name}</p>
-                    <p><strong><i class="fa-solid fa-phone"></i> Phone:</strong> ${project.contactDetails.phone}</p>
-                    ${project.contactDetails.email ? `<p><strong><i class="fa-solid fa-envelope"></i> Email:</strong> ${project.contactDetails.email}</p>` : ''}
+                    <p><strong><i class="fa-solid fa-user"></i> Contact Person:</strong> ${project.contactDetails?.name || 'Not specified'}</p>
+                    <p><strong><i class="fa-solid fa-phone"></i> Phone:</strong> ${project.contactDetails?.phone || 'Not specified'}</p>
+                    ${project.contactDetails?.email ? `<p><strong><i class="fa-solid fa-envelope"></i> Email:</strong> ${project.contactDetails.email}</p>` : ''}
                     <p><strong><i class="fa-solid fa-comment"></i> Preferred Contact:</strong> ${contactIcon} ${contactMethod}</p>
                 </div>
                 <div class="contact-actions">
@@ -855,7 +902,7 @@ class Dashboard {
                     <button class="whatsapp-btn" data-project-id="${project.id}" data-contact-method="whatsapp">
                         <i class="fa-brands fa-whatsapp"></i> WhatsApp
                     </button>
-                    ${project.contactDetails.email ? `
+                    ${project.contactDetails?.email ? `
                     <button class="email-btn" data-project-id="${project.id}" data-contact-method="email">
                         <i class="fa-solid fa-envelope"></i> Email
                     </button>
@@ -864,7 +911,7 @@ class Dashboard {
             </div>
             
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #444;">
-                <small><i class="fa-solid fa-clock"></i> Posted: ${new Date(project.createdAt).toLocaleDateString()}</small>
+                <small><i class="fa-solid fa-clock"></i> Posted: ${project.createdAt ? new Date(project.createdAt).toLocaleDateString() : 'Unknown date'}</small>
                 <small><i class="fa-solid fa-eye"></i> ${Math.floor(Math.random() * 50) + 1} views</small>
             </div>
         `;
@@ -899,14 +946,21 @@ class Dashboard {
             'email': 'Email',
             'any': 'Any Method'
         };
-        return methods[method] || method;
+        return methods[method] || method || 'Any Method';
     }
 
     contactProject(projectId, method) {
         const project = this.projects.find(p => p.id === projectId);
-        if (!project) return;
+        if (!project) {
+            console.error('Project not found:', projectId);
+            return;
+        }
 
         const contact = project.contactDetails;
+        if (!contact) {
+            console.error('Contact details not found for project:', projectId);
+            return;
+        }
         
         switch(method) {
             case 'phone':
