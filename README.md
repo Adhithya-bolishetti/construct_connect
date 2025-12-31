@@ -4,7 +4,7 @@
 
 ---
 
-## 🌟 Features
+## Features
 
 ### For Workers
 - **Profile Management:** Create and manage professional profiles with skills, experience, and availability
@@ -35,7 +35,7 @@
 
 ---
 
-## 🚀 Installation & Setup
+## Installation & Setup
 
 1. **Clone the repository:**
 ```bash
